@@ -8,7 +8,7 @@ JSON-текст представляет собой в закодированн�
 Пример данных в формате JSON:
 ```json
 {
-	"lastname" : "Ivanov",
+    "lastname" : "Ivanov",
     "firstname" : "Ivan",
     "age" : 25,
     "islegal" : false,
@@ -30,7 +30,7 @@ JSON-текст представляет собой в закодированн�
 ```cpp
 class Json {
 public:
-	Json(const std::string& s);
+    Json(const std::string& s);
    	
     std::any& operator[](const std::string& key);
     std::any& operator[](int index);

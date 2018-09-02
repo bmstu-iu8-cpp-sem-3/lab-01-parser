@@ -1,0 +1,29 @@
+language: cpp
+sudo: true
+
+notifications:
+  email: false
+
+matrix:
+  include:
+    # works on Trusty
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-trusty-5.0
+          packages:
+            - clang-5.0
+      env:
+        - MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0"
+
+before_install:
+    - eval "${MATRIX_EVAL}"
+
+script:
+  - chmod 777 ./cpplint.py
+  - ( for file in $(find ./ -name "*.cpp"); do ./cpplint.py $file || exit; done );
+  - mkdir build && cd build
+  - cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=YES .. && make
+  - ( for file in $(find ../ -name "*.cpp"); do echo $file; clang-check -analyze $file -p ./ || exit; done );
+  - ./executable

@@ -1,5 +1,6 @@
 cmake_minimum_required (VERSION 2.8)
 
+include(gtest.cmake)
 include_directories(SYSTEM
     ./
 )
@@ -11,7 +12,7 @@ set(CMAKE_CXX_FLAGS
 
 # enum your files
 add_executable(executable
-  
+  test.cpp
 )
-
-target_link_libraries(executable -fsanitize=address)
+find_package (Threads)
+target_link_libraries(executable -fsanitize=address gtest ${CMAKE_THREAD_LIBS_INIT})

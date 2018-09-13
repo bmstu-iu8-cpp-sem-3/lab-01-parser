@@ -61,7 +61,7 @@ public:
 ```cpp
 std::string json = <json-строка из примера выше>;
 
-Json student = Json::parse(json);
+Json object = Json::parse(json);
 EXPECT_EQ(std::any_cast<std::string>(object["lastname"]), "Ivanov");
 EXPECT_EQ(std::any_cast<bool>(object["islegal"]), false);
 EXPECT_EQ(std::any_cast<int>(object["age"]), 25);

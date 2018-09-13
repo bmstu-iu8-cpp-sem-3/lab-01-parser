@@ -26,6 +26,6 @@ script:
   - chmod 777 ./cpplint.py
   - ( for file in $(find ./ -name "*.cpp"); do ./cpplint.py $file || exit; done );
   - mkdir build && cd build
-  - cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=YES .. && make
+  - cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=YES -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=gold .. && make
   - ( for file in $(find ../ -name "*.cpp"); do echo $file; clang-check -analyze $file -p ./ || exit; done );
   - ./executable

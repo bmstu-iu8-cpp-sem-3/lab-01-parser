@@ -36,4 +36,20 @@ TEST(Json, LoadFromString) {
   EXPECT_EQ(std::any_cast<std::string>(address["street"]), "Vozdvijenka");
 }
 
+TEST(Json, NoThrow) {
+  ASSERT_NO_THROW(Json(R"({"key":[[[]]]})"));
+  ASSERT_NO_THROW(Json(R"([[],["key"],[]])"));
+  ASSERT_NO_THROW(Json(R"({"k1":{},"k2":{"key":"value"},"k3":{}})"));
+  ASSERT_NO_THROW(Json(R"({"k1":{},"k2":{"key": 40},"k3":[0.4]})"));
+  ASSERT_NO_THROW(Json(R"({"key":{"d":{"a":{}}}})"));
+}
+
+TEST(Json, AnyThrow) {
+  ASSERT_ANY_THROW(Json(R"({"key":[[[]]})"));
+  ASSERT_ANY_THROW(Json(R"([[]["key"],[]])"));
+  ASSERT_ANY_THROW(Json(R"({"k1"{},"k2":{"key":"value"},"k3":{}})"));
+  ASSERT_ANY_THROW(Json(R"({"k1":{},"k2":{"key": 40},k3":[0.4]})"));
+  ASSERT_ANY_THROW(Json(R"("key":{"d":{"a":{}}}})"));
+}
+
 }  // namespace

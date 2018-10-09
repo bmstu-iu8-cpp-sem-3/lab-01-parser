@@ -1,17 +1,27 @@
-cmake_minimum_required (VERSION 2.8)
+cmake_minimum_required(VERSION 3.4)
 
-include(gtest.cmake)
-include_directories(SYSTEM
-    ./
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+include("tools/gate/cmake/HunterGate.cmake")
+
+HunterGate(
+  URL "https://github.com/ruslo/hunter/archive/v0.23.31.tar.gz"
+  SHA1 "3d94b8522541c4c8eaac606f4c47d09322a8019c"
 )
 
-# if(CMAKE_COMPILER_IS_GNUCXX)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -fsanitize=address -O1 -Wall -Wextra -Wno-unused-command-line-argument -Wshadow -Wnon-virtual-dtor -pedantic")
-# endif(CMAKE_COMPILER_IS_GNUCXX)
+project(parser)
+string(APPEND CMAKE_CXX_FLAGS " -Wall -Wextra -Wno-unused-command-line-argument -Wshadow -Wnon-virtual-dtor -pedantic")
 
-# enum your files
-add_executable(executable
-  test.cpp
+hunter_add_package(GTest)
+find_package(GTest CONFIG REQUIRED)
+
+# enum your files and delete this comment
+add_executable(parser_tests
 )
-find_package (Threads)
-target_link_libraries(executable -fsanitize=address gtest ${CMAKE_THREAD_LIBS_INIT})
+
+target_include_directories(parser_tests PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(parser_tests GTest::main)
+
+enable_testing()
+add_test(NAME tests COMMAND parser_tests) 

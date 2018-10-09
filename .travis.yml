@@ -1,31 +1,40 @@
+os: linux
+sudo: false
 language: cpp
-sudo: true
 
-notifications:
-  email: false
-  
 addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
     packages:
     - libstdc++-7-dev
+    - g++-7
+    update: true
+
+cache:
+  apt: true
+  directories:
+  - $HOME/.hunter
+
+env: CC_EVAL=gcc-7 CXX_EVAL=g++-7
 
 before_install:
-  # C++17
-  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-  - sudo apt-get update -qq
-
-install: 
-  # C++17
-  - sudo apt-get install -qq g++-7
-  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 90
-  - eval "CC=/usr/bin/gcc && CXX=/usr/bin/g++"
+- export CXX=$CXX_EVAL
+- export CC=$CC_EVAL
+- pip install --user cpplint
 
 script:
-  - chmod 777 ./cpplint.py
-  - ( for file in $(find ./ -name "*.cpp"); do ./cpplint.py $file || exit; done );
-  - mkdir build && cd build
-  - cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=YES -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=gold .. && make
-  - ( for file in $(find ../ -name "*.cpp"); do echo $file; clang-check -analyze $file -p ./ || exit; done );
-  - ./executable
+- files=`find . -name "*.cpp" -or -name "*.hpp" -or -name ".h" | grep -v "./tools/*"`
+# sanitaizer check
+- ( for file in $files; do cpplint --filter=-whitespace/braces,-whitespace/indent,-whitespace/comments $file || exit; done );
+- ./tools/polly/bin/polly --reconfig --toolchain sanitize-address --config Release --fwd CMAKE_EXE_LINKER="-fuse-ld=gold"
+# clang-check
+- ./tools/polly/bin/polly --reconfig --config Release --fwd CMAKE_EXE_LINKER="-fuse-ld=gold" CMAKE_EXPORT_COMPILE_COMMANDS=ON
+- ( for file in $files; do echo $file; clang-check -analyze $file -p _builds/default-Release || exit; done );
+# tests
+- ./tools/polly/bin/polly --reconfig --test --config Release --fwd CMAKE_EXE_LINKER="-fuse-ld=gold"
+
+# CMAKE_EXE_LINKER need to bugfix: https://stackoverflow.com/questions/50024731/ld-unrecognized-option-push-state-no-as-needed
+
+notifications:
+  email: false

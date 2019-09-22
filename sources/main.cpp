@@ -1,14 +1,13 @@
-// ConsoleApplication9.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
 #include <iostream>
 #include <string>
 #include <any>
 #include <map>
 #include <vector>
 #include <sstream>
+#include <fstream>
 
 class Json {
-public:
+private:
 
     enum class Act //delete if enum working without class
     {
@@ -24,7 +23,7 @@ public:
         while(number[pos] != ','){
             if(number[pos] == ']') break;
             if(number[pos] == '}') break;
-            res.push_back(number[pos]);
+            if(!isspace(number[pos])) res.push_back(number[pos]);
             pos++;
         }
         pos--;
@@ -64,10 +63,11 @@ public:
     }
 
     std::vector<std::any> parse_array(const std::string &str, size_t& pos){
-        std::vector<std::any> res;
+        std::vector<std::any>res;
         auto state = Act::find_value;
-        for(size_t i = pos; i < str.length(); i++){
+        for(size_t i = pos; str[i] != ']'; i++){
             skip(str, i);
+            auto k =str[i];
             if(str[i] == '['){
                 if(state == Act::find_value){
                     i++;
@@ -105,7 +105,7 @@ public:
                         res.emplace_back(parse_number(str,i));
                         state = Act ::find_comma_or_end;
                     }
-                } else if(str[i] == 'f' || str[i] <= 't'){
+                } else if(str[i] == 'f' || str[i] == 't'){
                     if(state == Act::find_value){
                         res.emplace_back(parse_bool(str,i));
                         state = Act ::find_comma_or_end;
@@ -113,8 +113,9 @@ public:
                 }
                 //else throw std::bad_any_cast();
             }
+
         }
-        return res;
+
     }
 
     std::map<std::string,std::any> parse_object(const std::string &str, size_t& pos){
@@ -139,6 +140,7 @@ public:
                 }// else throw std::bad_any_cast();
             } else if(str[i] == '['){
                 if(state == Act::find_value){
+                    i++;
                     res[key] = Json(parse_array(str,i));
                     state = Act::find_comma_or_end;
                 } //else throw std::bad_any_cast();
@@ -172,21 +174,22 @@ public:
                         res[key] = parse_number(str,i);
                         state = Act ::find_comma_or_end;
                     }
-                } else if(str[i] == 'f' || str[i] <= 't'){
+                } else if(str[i] == 'f' || str[i] == 't'){
                     if(state == Act::find_value){
                         res[key] = parse_bool(str,i);
                         state = Act ::find_comma_or_end;
                     }
                 }
-               // else throw std::bad_any_cast();
+                // else throw std::bad_any_cast();
             }
         }
     }
     //------------------------------------------------------------------------------------------------------------------
-
+public:
     // Конструктор из строки, содержащей Json-данные.
     Json(const std::string &s) {
         for(size_t i = 0; s[i] != '\0'; i++){
+            skip(s, i);
             if(s[i] == '{'){
                 _data = std::any_cast<std::map<std::string,std::any>>(parse_object(s,i));
             }else if(s[i] == '['){
@@ -197,27 +200,20 @@ public:
         }
     };
 
+    Json() {};
     Json(const std::vector<std::any> &array) : _data(array) {};
     Json(const std::map<std::string,std::any> &object) : _data(object) {};
 
     // Метод возвращает true, если данный экземпляр содержит в себе JSON-массив. Иначе false.
     bool is_array() const {
-        try {
-
-        } catch(std::bad_any_cast){
-            std::cout<<"Error";
-            return false;
-        }
+        if(this->_data.type() != typeid(std::vector<std::any>)) return false;
+        return true;
     }
 
     // Метод возвращает true, если данный экземпляр содержит в себе JSON-объект. Иначе false.
     bool is_object() const {
-        try {
-
-        } catch(std::bad_any_cast){
-            std::cout<<"Error";
-            return false;
-        }
+        if(this->_data.type() != typeid(std::map<std::string,std::any>)) return false;
+        return true;
     }
 
 
@@ -225,11 +221,11 @@ public:
     // Значение может иметь один из следующих типов: Json, std::string, double, bool или быть пустым.
     // Если экземпляр является JSON-массивом, генерируется исключение.
     std::any &operator[](const std::string &key){
-        if(is_object()){
+        if(this->is_object()){
             auto &data = std :: any_cast< std::map < std :: string , std::any >&> (_data) ;
             return data[key];
-        } else{
-
+        } else if(this->is_array()){
+            std::cout<<"f";
         }
     }
 
@@ -237,11 +233,11 @@ public:
     // Значение может иметь один из следующих типов: Json, std::string, double, bool или быть пустым.
     // Если экземпляр является JSON-объектом, генерируется исключение.
     std::any &operator[](int index){
-        if(is_array()){
-            auto &data = std :: any_cast< std::vector < std::any >&> (_data) ;
+        if(this->is_array()){
+            auto &data = std :: any_cast< std::vector < std::any >&> (_data);
             return data[index];
-        } else{
-
+        } else if(this->is_object()){
+            std::cout<<"f";
         }
     }
 
@@ -252,10 +248,13 @@ public:
 
     // Метод возвращает объекта класса Json из файла, содержащего Json-данные в текстовом формате.
     static Json parseFile(const std::string &path_to_file) {
-
+        std::ifstream f(path_to_file);
+        std::stringstream ss;
+        ss << f.rdbuf();
+        std::cout<<ss.str();
+        return Json(ss.str());
     }
 
 private:
     std::any _data;
 };
-

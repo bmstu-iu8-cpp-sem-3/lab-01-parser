@@ -1,3 +1,5 @@
+Copyright 2019 <ara07.99@icloud.com>
+
 #include <header.hpp>
 
 Json::Json(const std::map<std::string, std::any>& map)
@@ -17,19 +19,16 @@ Json::Json(const std::string& str)
         if (str[i] == '{')
         {
             data = parse_object(str, i);
-        }
-        else if (str[i] == '[')
+        }else if (str[i] == '[')
         {
             data = parse_arr(str, i);
-        }
-        else if (!isspace(str[i]))
+        }else if (!isspace(str[i]))
         {
             throw std::logic_error("No braces");
         }
     }
 }
 
-// Метод возвращает true, если данный экземпляр содержит в себе JSON-массив. Иначе false.
 bool Json::is_array() const
 {
     try
@@ -43,7 +42,6 @@ bool Json::is_array() const
     }
 }
 
-// Метод возвращает true, если данный экземпляр содержит в себе JSON-объект. Иначе false.
 bool Json::is_object() const
 {
     try
@@ -57,15 +55,9 @@ bool Json::is_object() const
     }
 }
 
-// Метод возвращает true, если данный экземпляр не содержит ничего, т.е. null. Иначе false.
-bool Json::is_null() const
 {
     return data.has_value();
 }
-
-// Метод возвращает значение по ключу key, если экземпляр является JSON-объектом.
-// Значение может иметь один из следующих типов: Json, std::string, double, bool или быть пустым.
-// Если экземпляр является JSON-массивом, генерируется исключение.
 
 std::any& Json::operator[](const std::string& key)
 {
@@ -73,16 +65,11 @@ std::any& Json::operator[](const std::string& key)
     {
         auto& map = std::any_cast<std::map<std::string, std::any>&>(data);
         return map[key];
-    }
-    else
+    }else
     {
         throw std::logic_error("Error");
     }
 }
-
-// Метод возвращает значение по индексу index, если экземпляр является JSON-массивом.
-// Значение может иметь один из следующих типов: Json, std::string, double, bool или быть пустым.
-// Если экземпляр является JSON-объектом, генерируется исключение.
 
 std::any& Json::operator[](int index)
 {
@@ -90,16 +77,11 @@ std::any& Json::operator[](int index)
     {
         auto& vector = std::any_cast<std::vector<std::any>&>(data);
         return vector[index];
-    }
-    else
+    }else
     {
         throw std::logic_error("Error");
     }
 }
-
-// Метод возвращает значение по ключу key, если экземпляр является JSON-объектом.
-// Значение может иметь один из следующих типов: Json, std::string, double, bool или быть пустым.
-// Если экземпляр является JSON-массивом, генерируется исключение.
 
 const std::any& Json::operator[](const std::string& key) const
 {
@@ -108,16 +90,11 @@ const std::any& Json::operator[](const std::string& key) const
         auto test = data;
         auto& map = std::any_cast<std::map<std::string, std::any>&>(test);
         return map[key];
-    }
-    else
+    }else
     {
         throw std::logic_error("Error");
     }
 }
-
-// Метод возвращает значение по индексу index, если экземпляр является JSON-массивом.
-// Значение может иметь один из следующих типов: Json, std::string, double, bool или быть пустым.
-// Если экземпляр является JSON-объектом, генерируется исключение.
 
 const std::any& Json::operator[](int index) const
 {
@@ -126,8 +103,7 @@ const std::any& Json::operator[](int index) const
         auto test = data;
         auto& vector = std::any_cast<std::vector<std::any>&>(test);
         return vector[index];
-    }
-    else
+    }else
     {
         throw std::logic_error("Error!!!");
     }
@@ -138,8 +114,6 @@ Json Json::parse(const std::string& str)
 {
     return Json(str);
 }
-
-// Метод возвращает объекта класса Json из файла, содержащего Json-данные в текстовом формате.
 
 Json Json::parseFile(const std::string& path_to_file)
 {
@@ -185,11 +159,9 @@ double parse_num(const std::string& str, size_t& pos)
         {
             pos = --i;
             return stod(string);
-        }
-        else
+        }else
             throw std::invalid_argument("Error");
     }
-
     return stof(string);
 }
 
@@ -210,11 +182,9 @@ bool parse_bool(const std::string& str, size_t& pos)
                 return true;
             else
                 throw std::invalid_argument("Wrong argument");
-        }
-        else
+        }else
             throw std::invalid_argument("Error");
     }
-
     return false;
 }
 
@@ -241,57 +211,47 @@ std::vector<std::any> Json::parse_arr(const std::string& str, size_t& pos)
             {
                 result.emplace_back(parse_str(str, i));
                 st = find_comma_or_end;
-            }
-            else
+            }else
                 throw std::invalid_argument("Error");
-        }
-        else if (str[i] == '{')
+        }else if (str[i] == '{')
         {
             if (st == find_value)
             {
                 result.emplace_back(Json(parse_object(str, i)));
                 st = find_comma_or_end;
-            }
-            else
+            }else
                 throw std::invalid_argument("Error");
-        }
-        else if (str[i] == '[')
+        }else if (str[i] == '[')
         {
             if (st == find_value)
             {
                 result.emplace_back(Json(parse_arr(str, i)));
                 st = find_comma_or_end;
-            }
-            else
+            }else
                 throw std::invalid_argument("Error");
-        }
-        else if (str[i] == ']')
+        }else if (str[i] == ']')
         {
             if (st == find_comma_or_end)
             {
                 pos = i;
                 return result;
-            }
-            else if (st == find_value)
+            }else if (st == find_value)
             {
                 parse_null(str, i);
                 if (isdigit(str[i]))
                 {
                     result.emplace_back(parse_num(str, i));
-                }
-                else if (isalpha(str[i]))
+                }else if (isalpha(str[i]))
                 {
                     result.emplace_back(parse_bool(str, i));
                 }
 
                 return result;
             }
-        }
-        else if (str[i] == ',')
+        }else if (str[i] == ',')
         {
             st = find_value;
-        }
-        else
+        }else
         {
             if (st == find_value)
             {
@@ -299,14 +259,12 @@ std::vector<std::any> Json::parse_arr(const std::string& str, size_t& pos)
                 if (isdigit(str[i]))
                 {
                     result.emplace_back(parse_num(str, i));
-                }
-                else if (isalpha(str[i]))
+                }else if (isalpha(str[i]))
                 {
                     result.emplace_back(parse_bool(str, i));
                 }
                 st = find_comma_or_end;
-            }
-            else if (!isspace(str[i]))
+            }else if (!isspace(str[i]))
                 throw std::logic_error("Error");
         }
     }
@@ -328,70 +286,58 @@ std::map<std::string, std::any> Json::parse_object(const std::string& str, size_
             {
                 key = parse_str(str, i);
                 st = find_colon;
-            }
-            else if (st == find_value)
+            }else if (st == find_value)
             {
                 result[key] = parse_str(str, i);
                 st = find_key_or_end;
-            }
-            else
+            }else
             {
                 throw std::logic_error("Error");
             }
-        }
-        else if (str[i] == ':')
+        }else if (str[i] == ':')
         {
             if (st == find_colon)
                 st = find_value;
             else
                 throw std::logic_error("Error");
-        }
-        else if (str[i] == '{')
+        }else if (str[i] == '{')
         {
             if (st == find_value)
             {
                 result[key] = Json(parse_object(str, i));
                 st = find_key_or_end;
             }
-        }
-        else if (str[i] == '}')
+        }else if (str[i] == '}')
         {
             if (st == find_key_or_end || st == find_comma_or_end)
             {
                 pos = i;
                 return result;
-            }
-            else
+            }else
                 throw std::logic_error("Error");
-        }
-
-        else if (str[i] == '[')
+        }else if (str[i] == '[')
         {
             if (st == find_value)
             {
                 result[key] = Json(parse_arr(str, i));
                 st = find_key_or_end;
             }
-        }
-        else if (str[i] == ']')
+        }else if (str[i] == ']')
         {
             if (st == find_key_or_end || st == find_comma_or_end)
             {
                 pos = i;
                 return result;
-            }
-            else
+            }else
                 throw std::logic_error("Error");
-        }
-        else if (!isspace(str[i]))
+        }else if (!isspace(str[i]))
         {
             if (st == find_value)
             {
                 if (isdigit(str[i]))
                 {
                     result[key] = parse_num(str, i);
-                }
-                else
+                }else
                 {
                     result[key] = parse_bool(str, i);
                 }

@@ -330,7 +330,8 @@ std::map<std::string, std::any> Json::parse_object(const std::string& str, size_
                 return result;
             }else
                 throw std::logic_error("Error");
-        }else if (!isspace(str[i]))
+        }else 
+            if (!isspace(str[i]))
         {
             if (st == find_value)
             {

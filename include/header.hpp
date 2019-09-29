@@ -17,7 +17,7 @@ public:
         find_value,
         find_comma_or_end
     };
-    Json(const std::map<std::string, std::any>& map);
+    explicit Json(const std::map<std::string, std::any>& map);
     Json(const std::vector<std::any>& vector);
     // Конструктор из строки, содержащей Json-данные.
     Json(const std::string& s);

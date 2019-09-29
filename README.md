@@ -1,3 +1,5 @@
+![Build Status](https://travis-ci.org/ARAOvsepyan/lab-01-parser.svg?branch=master)
+
 # Задание 1
 Реализовать парсер данных в формате JSON.
 

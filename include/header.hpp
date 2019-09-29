@@ -1,3 +1,4 @@
+ Copyright 2019 Your Name <ara07.99@icloud.com>
 #pragma once
 
 #include <any>

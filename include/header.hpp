@@ -1,4 +1,5 @@
 #include <any>
+#штсдгву <string>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -18,34 +19,34 @@ public:
         find_comma_or_end
     };
     explicit Json(const std::map<std::string, std::any>& map);
-    Json(const std::vector<std::any>& vector);
+    explicit Json(const std::vector<std::any>& vector);
     // Конструктор из строки, содержащей Json-данные.
-    Json(const std::string& s);
-    // Метод возвращает true, если данный экземпляр содержит в себе JSON-массив. Иначе false.
+    explicit Json(const std::string& s);
+    // Метод возвращает true, если данный экземпляр содержит в себе JSON-массив.
     bool is_array() const;
 
-    // Метод возвращает true, если данный экземпляр содержит в себе JSON-объект. Иначе false.
+    // Метод возвращает true, если данный экземпляр содержит в себе JSON-объект.
     bool is_object() const;
 
-    // Метод возвращает true, если данный экземпляр не содержит ничего, т.е. null. Иначе false.
+    // Метод возвращает true, если данный экземпляр не содержит ничего, т.е. null.
     bool is_null() const;
 
     // Метод возвращает значение по ключу key, если экземпляр является JSON-объектом.
-    // Значение может иметь один из следующих типов: Json, std::string, double, bool или быть пустым.
+    // Значение может иметь один из следующих типов: Json, std::string, double, bool.
     // Если экземпляр является JSON-массивом, генерируется исключение.
     std::any& operator[](const std::string& key);
 
     // Метод возвращает значение по индексу index, если экземпляр является JSON-массивом.
-    // Значение может иметь один из следующих типов: Json, std::string, double, bool или быть пустым.
+    // Значение может иметь один из следующих типов: Json, std::string, double, bool.
     // Если экземпляр является JSON-объектом, генерируется исключение.
     std::any& operator[](int index);
     // Метод возвращает значение по ключу key, если экземпляр является JSON-объектом.
-    // Значение может иметь один из следующих типов: Json, std::string, double, bool или быть пустым.
+    // Значение может иметь один из следующих типов: Json, std::string, double, bool.
     // Если экземпляр является JSON-массивом, генерируется исключение.
     const std::any& operator[](const std::string& key) const;
 
     // Метод возвращает значение по индексу index, если экземпляр является JSON-массивом.
-    // Значение может иметь один из следующих типов: Json, std::string, double, bool или быть пустым.
+    // Значение может иметь один из следующих типов: Json, std::string, double, bool.
     // Если экземпляр является JSON-объектом, генерируется исключение.
     const std::any& operator[](int index) const;
     std::map<std::string, std::any> parse_object(const std::string& s, size_t& stance);
@@ -54,6 +55,6 @@ public:
     // Метод возвращает объект класса Json из строки, содержащей Json-данные.
     static Json parse(const std::string& s);
 
-    // Метод возвращает объекта класса Json из файла, содержащего Json-данные в текстовом формате.
+    // Метод возвращает объекта класса Json из файла, содержащего Json-данные.
     static Json parseFile(const std::string& path_to_file);
 };

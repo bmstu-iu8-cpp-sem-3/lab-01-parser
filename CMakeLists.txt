@@ -26,6 +26,8 @@ string(APPEND CMAKE_CXX_FLAGS " -Wshadow -Wnon-virtual-dtor")
 
 hunter_add_package(GTest)
 find_package(GTest CONFIG REQUIRED)
+hunter_add_package(Boost COMPONENTS)
+find_package(Boost CONFIG REQUIRED)
 
 
 add_library(
@@ -41,17 +43,39 @@ add_executable(
 )
 
 
-target_include_directories(lab-01-parser
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-target_include_directories(tests 
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+target_include_directories(
+        ${PROJECT_NAME}
+        PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${BOOST_ROOT}/include
 )
 
-target_link_libraries(tests gtest_main lab-01-parser)
+target_include_directories(
+        tests
+        PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${GTEST_ROOT}/include
+)
+find_library(
+        GTEST_LOCAL_LIB
+        NAMES gtest
+        PATHS ${PROJECT_NAME}/lib64/
+)
+find_library(
+        GTEST_LOCAL_LIB_MAIN
+        NAMES gtest_main
+        PATHS ${PROJECT_NAME}/lib64/
+)
+target_link_libraries(
+        tests
+        ${CMAKE_THREAD_LIBS_INIT}
+        ${GTEST_LOCAL_LIB}
+        ${GTEST_LOCAL_LIB_MAIN}
+        ${PROJECT_NAME}
+)
 
 enable_testing()
-add_test(NAME unit_tests COMMAND tests) 
+add_test(NAME unit_tests COMMAND tests)
 
 if(BUILD_COVERAGE)
   set(ENABLE_COVERAGE ON CACHE BOOL "Enable coverage build." FORCE)

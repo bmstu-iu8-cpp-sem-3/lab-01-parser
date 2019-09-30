@@ -146,7 +146,8 @@ double parse_num(const std::string& str, size_t& pos)
     {
         if (isdigit(str[i]) || str[i] == '.') {
             string += str[i];
-        } else if (str[i] == ',' || str[i] == ']' || str[i] == '}' || isspace(str[i])) {
+        } else if (str[i] == ',' || str[i] == ']' || str[i] == '}' 
+                   || isspace(str[i])) {
             pos = --i;
             return stod(string);
         } else {
@@ -260,7 +261,8 @@ std::vector<std::any> Json::parse_arr(const std::string& str, size_t& pos)
 }
 
 
-std::map<std::string, std::any> Json::parse_object(const std::string& str, size_t& pos)
+std::map<std::string, std::any> Json::parse_object(const std::string& str, 
+                                                   size_t& pos)
 {
     std::map<std::string, std::any> result;
     State st = find_key_or_end;

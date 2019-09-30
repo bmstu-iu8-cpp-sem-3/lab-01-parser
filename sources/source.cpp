@@ -17,9 +17,9 @@ Json::Json(const std::string& str)
     for (size_t i = 0; i < str.size(); ++i) {
         if (str[i] == '{') {
             data = parse_object(str, i);
-        }else if (str[i] == '[') {
+        } else if (str[i] == '[') {
             data = parse_arr(str, i);
-        }else if (!isspace(str[i])) {
+        } else if (!isspace(str[i])) {
             throw std::logic_error("No braces");
         }
     }

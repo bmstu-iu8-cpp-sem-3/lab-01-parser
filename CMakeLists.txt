@@ -56,16 +56,7 @@ target_include_directories(
         ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${GTEST_ROOT}/include
 )
-find_library(
-        GTEST_LOCAL_LIB
-        NAMES gtest
-        PATHS ${PROJECT_NAME}/lib64/
-)
-find_library(
-        GTEST_LOCAL_LIB_MAIN
-        NAMES gtest_main
-        PATHS ${PROJECT_NAME}/lib64/
-)
+
 target_link_libraries(
         tests
         ${CMAKE_THREAD_LIBS_INIT}

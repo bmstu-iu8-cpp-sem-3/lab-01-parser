@@ -1,4 +1,5 @@
-Copyright 2019 <ara07.99@icloud.com>
+//Copyright 2019 <ara07.99@icloud.com>
+
 #include <header.hpp>
 
 int main()

@@ -41,7 +41,7 @@ public:
 
     const std::any& operator[](int index) const;
 
-    std::map<std::string, std::any> parse_object(const std::string& s, 
+    std::map<std::string, std::any> parse_object(const std::string& s,
                                                  size_t& stance);
 
     std::vector<std::any> parse_arr(const std::string& s, size_t& stance);

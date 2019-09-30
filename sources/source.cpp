@@ -51,6 +51,7 @@ bool Json::is_object() const
     }
 }
 
+bool Json::is_null() const
 {
     return data.has_value();
 }

@@ -70,9 +70,6 @@ target_link_libraries(
 hunter_add_package(nlohmann_json)
 find_package(nlohmann_json CONFIG REQUIRED)
 
-add_executable(sources main.cpp)
-target_link_libraries(main PUBLIC nlohmann_json::nlohmann_json)
-
 enable_testing()
 add_test(NAME unit_tests COMMAND tests)
 

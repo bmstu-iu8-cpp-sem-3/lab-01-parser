@@ -62,8 +62,8 @@ target_include_directories(
 target_link_libraries(
         tests
         ${CMAKE_THREAD_LIBS_INIT}
-        ${GTEST_LOCAL_LIB}
-        ${GTEST_LOCAL_LIB_MAIN}
+       GTest::gtest
+       GTest::main
         ${PROJECT_NAME}
 )
 

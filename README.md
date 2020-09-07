@@ -6,7 +6,7 @@
 
 Вкачестве аргумента утилите передается путь в к файлу, который в ключе `items`
 содержит массив объектов, каждый объект из которых имеет следующие ключи:
-`name` - Фамилия и Имя студента(строчный тип)
+`name` - фамилия и имя студента (строчный тип)
 `group` - номер группы (строчный/целочисленный тип)
 `avg` - средний балл (строчный/целочисленный/вещественный тип)
 `debt` - список задолженностей (строчный/перечислительный тип)
@@ -39,14 +39,15 @@
         "Linux",
         "Network"
       ]
-    },
+    }
   ],
   "_meta": {
-    "count": 3,
+    "count": 3
   }
 }
 ```
 
+И иллюстрацию того, что должна вывести программа после обработки данного файла.
 ```sh
 # ./parser students.json
 
@@ -70,6 +71,7 @@
   * `items is array`
   * `_meta.count == len(items)`
 - Вывод ошибок должен быть информативным
+- При написание тестов учесть сценарии с различными типами для полями (`group`, `avg`, `debt`)
 
 ## Подсказки
 
@@ -79,7 +81,6 @@
 ```cpp
 // include/student.hpp
 
-//...
 struct Student {
     std::string Name;
     std::any Group;
@@ -91,7 +92,6 @@ struct Student {
 ```cpp
 // sources/student.cpp
 
-//...
 using nlohmann::json;
 
 void from_json(const json& j, Student& s) {
@@ -105,13 +105,10 @@ void from_json(const json& j, Student& s) {
 ```cpp
 // sources/main.cpp
 
-//...
 int main() {
-
     //...
     std::ifstream file{jsonPath};
-    if (!file)
-    {
+    if (!file) {
         throw std::runtime_error{"unable to open json: " + jsonPath};
     }
 
@@ -119,8 +116,7 @@ int main() {
     file >> data;
 
     std::vector<Student> students;
-    for (auto const& student : data.at("items"))
-    {
+    for (auto const& student : data.at("items")) {
         students.push_back(Student{student});
     }
     //...

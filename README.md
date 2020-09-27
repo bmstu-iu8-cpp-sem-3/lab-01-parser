@@ -94,7 +94,7 @@ struct Student {
 
 using nlohmann::json;
 
-void from_json(const json& j, Student& s) {
+void from_json(const json& j, student_t& s) {
 
     s.name = get_name(j.at("group"));
     s.group = get_group(j.at("group"));
@@ -147,11 +147,32 @@ int main() {
     json data;
     file >> data;
 
-    std::vector<Student> students;
-    for (auto const& student : data.at("items")) {
-        students.push_back(Student{student});
+    std::vector<student_t> students;
+    for (auto const& item : data.at("items")) {
+        auto student = item.get<student_t>()
+        students.push_back(student);
     }
     //...
-    print(student, std::cout);
+    print(students, std::cout);
+}
+
+void print(const std::vector<student_t>& students, std::ostream& os) {
+
+    //...
+    for (auto const& student : students) {
+        print(student, os);
+    }
+}
+void print(const student_t& student, std::ostream& os) {
+    //...
+    if (student.debt.type() == typeid(std::nullptr_t)) {
+        os << "null";
+    } else if (student.debt.type() == typeid(std::string)) {
+        os << std::any_cast<std::string>(student.debt);
+    } else {
+        os
+          << std::any_cast<std::vector<std::string> >(student.debt).size()
+          << " items";
+    }
 }
 ```

@@ -82,10 +82,10 @@
 // include/student.hpp
 
 struct Student {
-    std::string Name;
-    std::any Group;
-    double Avg;
-    std::any Debt;
+    std::string name;
+    std::any group;
+    std::any avg;
+    std::any debt;
 }
 ```
 
@@ -95,10 +95,42 @@ struct Student {
 using nlohmann::json;
 
 void from_json(const json& j, Student& s) {
-    j.at("name").get_to(s.Name);
-    j.at("group").get_to(s.Group);
-    j.at("avg").get_to(s.Avg);
-    j.at("debt").get_to(s.Debt);
+
+    s.name = get_name(j.at("group"));
+    s.group = get_group(j.at("group"));
+    s.avg = get_avg(j.at("avg"));
+    s.debt = get_group(j.at("debt"));
+}
+
+auto get_name(const json& j) -> std::string {
+    return j.get<std::string>();
+}
+
+auto get_debt(const json& j) -> std::any {
+    if (j.is_null())
+        return nullptr;
+    else if (j.is_string())
+        return j.get<std::string>();
+    else
+        return j.get<std::vector<std::string> >();
+}
+
+auto get_avg(const json& j) -> std::any {
+    if (j.is_null())
+        return nullptr;
+    else if (j.is_string())
+        return j.get<std::string>();
+    else if (j.is_number_float())
+        return j.get<double>();
+    else
+        return j.get<std::size_t>();
+}
+
+auto get_group(const json& j) -> std::any {
+    if (j.is_string())
+        return = j.get<std::string>();
+    else
+        return j.get<std::size_t>();
 }
 ```
 
@@ -120,5 +152,6 @@ int main() {
         students.push_back(Student{student});
     }
     //...
+    print(student, std::cout);
 }
 ```

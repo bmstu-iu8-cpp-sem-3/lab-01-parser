@@ -34,6 +34,7 @@ add_library(template STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/sources/source.cpp
 )
 add_executable(tests
+  ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_runner.cpp
   # TODO: enum your files and delete this comment
   ${CMAKE_CURRENT_SOURCE_DIR}/tests/test.cpp
 )

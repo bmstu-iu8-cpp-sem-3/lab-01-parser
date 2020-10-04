@@ -34,7 +34,6 @@ add_library(template STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/sources/source.cpp
 )
 add_executable(tests
-  ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_runner.cpp
   # TODO: enum your files and delete this comment
   ${CMAKE_CURRENT_SOURCE_DIR}/tests/test.cpp
 )
@@ -47,7 +46,7 @@ target_include_directories(tests
   PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 # TODO: change template word to project name and delete this comment
-target_link_libraries(tests GTest::gtest template)
+target_link_libraries(tests GTest::gmock_main template)
 
 enable_testing()
 add_test(NAME unit_tests COMMAND tests)

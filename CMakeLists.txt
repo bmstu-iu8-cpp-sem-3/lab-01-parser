@@ -14,8 +14,8 @@ set(
 include("tools/gate/cmake/HunterGate.cmake")
 
 HunterGate(
-  URL "https://github.com/cpp-pm/hunter/archive/v0.23.218.tar.gz"
-  SHA1 "9a3594a61227967fb92159339ba326701b287b19"
+  URL "https://github.com/cpp-pm/hunter/archive/v0.23.271.tar.gz"
+  SHA1 "2d6686024529b471e0cc3a4fc07d4d64b62a53ee"
 )
 
 
@@ -39,25 +39,31 @@ add_executable(tests
 )
 
 # TODO: change template word to project name and delete this comment
-target_include_directories(template 
+target_include_directories(template
   PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
-target_include_directories(tests 
+target_include_directories(tests
   PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 # TODO: change template word to project name and delete this comment
-target_link_libraries(tests GTest::main template)
+target_link_libraries(tests GTest::gmock_main template)
 
 enable_testing()
-add_test(NAME unit_tests COMMAND tests) 
+add_test(NAME unit_tests COMMAND tests)
 
 if(BUILD_COVERAGE)
+  function(ENABLE_PROJECT_COVERAGE PROJECT)
+    target_compile_options(${PROJECT} PRIVATE --coverage)
+    target_link_libraries(${PROJECT} --coverage)
+    add_coverage(${PROJECT})
+  endfunction()
+
   set(ENABLE_COVERAGE ON CACHE BOOL "Enable coverage build." FORCE)
   list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
   find_package(codecov)
   # TODO: change template word to project name and delete this comment
-  add_coverage(template)
-  add_coverage(tests)
+  enable_project_coverage(template)
+  enable_project_coverage(tests)
   list(APPEND LCOV_REMOVE_PATTERNS "'${PROJECT_SOURCE_DIR}/tests/*'")
   coverage_evaluate()
 endif()

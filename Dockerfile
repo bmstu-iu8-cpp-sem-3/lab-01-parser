@@ -1,3 +1,4 @@
+# rusdevops/bootstrap-cpp image
 FROM ubuntu:20.04
 LABEL maintainer="rusdevops@gmail.com"
 ENV DEBIAN_FRONTEND noninteractive

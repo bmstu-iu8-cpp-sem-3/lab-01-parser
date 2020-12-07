@@ -1,6 +1,6 @@
 [submodule "tools/polly"]
 	path = tools/polly
 	url = https://github.com/bmstu-iu8-cpp-sem-3/polly
-[submodule "tools/gate"]
-	path = tools/gate
-	url = https://github.com/cpp-pm/gate
+[submodule "tools/coverage"]
+	path = tools/coverage
+	url = https://github.com/bmstu-iu8-cpp-sem-3/infra-code-coverage

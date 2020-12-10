@@ -1,0 +1,59 @@
+name: Release
+
+on:
+  push:
+    tags:
+       - 'v*'
+
+jobs:
+  build:
+    name: Upload Release Asset
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: prepare environment
+        run:  sudo apt install git &&
+              git submodule update --init
+
+      - name: Build packages
+        id: build_packages
+        run: |
+          docker run -v `pwd`:`pwd` -w `pwd` --cap-add=SYS_PTRACE -t rusdevops/bootstrap-cpp scripts/package.sh
+          cd _artifacts
+          DEB_PACKAGE_NAME=$(ls *.deb | tail -n 1)
+          RPM_PACKAGE_NAME=$(ls *.rpm | tail -n 1)
+          echo "::set-output name=deb_package_filename::$DEB_PACKAGE_NAME"
+          echo "::set-output name=rpm_package_filename::$RPM_PACKAGE_NAME"
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload DEB Release Asset
+        id: upload-release-asset-deb
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: _artifacts/${{ steps.build_packages.outputs.deb_package_filename }}
+          asset_name: ${{ steps.build_packages.outputs.deb_package_filename }}
+          asset_content_type: application/zip
+
+      - name: Upload RPM Release Asset
+        id: upload-release-asset-rpm
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: _artifacts/${{ steps.build_packages.outputs.rpm_package_filename }}
+          asset_name: ${{ steps.build_packages.outputs.rpm_package_filename }}
+          asset_content_type: application/zip

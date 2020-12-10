@@ -25,6 +25,7 @@ jobs:
       - name: prepare environment
         run:  sudo apt install git &&
               git submodule update --init
+
       - name: checks
         run:
           docker run -v `pwd`:`pwd` -w `pwd` --cap-add=SYS_PTRACE -t rusdevops/bootstrap-cpp scripts/checks.sh
@@ -41,6 +42,7 @@ jobs:
       - name: prepare environment
         run:  sudo apt install git &&
               git submodule update --init
+
       - name: tests
         run:
           docker run -v `pwd`:`pwd` -w `pwd` -t rusdevops/bootstrap-cpp scripts/tests.sh
@@ -56,6 +58,7 @@ jobs:
       - name: prepare environment
         run:  sudo apt install git &&
               git submodule update --init
+
       - name: quality
         run:
           docker run -v `pwd`:`pwd` -w `pwd` -t rusdevops/bootstrap-cpp scripts/coverage.sh

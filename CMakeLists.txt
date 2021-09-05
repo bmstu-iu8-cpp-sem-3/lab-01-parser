@@ -16,8 +16,8 @@ set(
 include("cmake/HunterGate.cmake")
 
 HunterGate(
-  URL "https://github.com/cpp-pm/hunter/archive/v0.23.278.tar.gz"
-  SHA1 "35fa55bc1dfcf9f4d7264f8bb26cd1759ce1ae07"
+  URL "https://github.com/cpp-pm/hunter/archive/v0.23.314.tar.gz"
+  SHA1 "95c47c92f68edb091b5d6d18924baabe02a6962a"
 )
 
 # TODO: rename project and delete this comment

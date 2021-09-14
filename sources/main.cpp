@@ -10,7 +10,7 @@ int main() {
   j["group"] = "IU1-11";
   j["avg"] = 5;
   j["debt"] = "no";
-
+  std::cout << 124;
   student s1;
   from_Json(j,s1);
   student s2;

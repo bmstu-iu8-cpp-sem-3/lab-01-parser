@@ -31,8 +31,11 @@ void from_Json(const nlohmann::json& j, student& s);
 std::vector<student> parse_Json(nlohmann::json j);
 
 // return a string object made from std::any for a field of structure student
-auto get_typed_group(std::vector <student> st, int n) -> std::string;
-auto get_typed_avg(std::vector <student> st, int n)   -> std::string;
-auto get_typed_debt(std::vector <student> st, int n)  -> std::string;
+auto get_typed_group(const student& st) -> std::string;
+auto get_typed_avg(const student& st)   -> std::string;
+auto get_typed_debt(const student& st)  -> std::string;
+
+void print_students(const std::vector<student>& students, std::ostream& stream);
+std::ostream & operator << (std::ostream& ostream, const std::vector<student>& students);
 
 #endif // INCLUDE_STUDENT_HPP_

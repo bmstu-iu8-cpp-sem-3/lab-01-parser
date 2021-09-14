@@ -42,11 +42,12 @@ void from_Json(const nlohmann::json& j, student& s) {
 
 std::vector<student> parse_Json(nlohmann::json j) {
     int counter = 0;
-    for (nlohmann::json::iterator i = j["items"].begin(); i != j["items"].end(); i++) {
+    for (nlohmann::json::iterator i = j["items"].begin();
+         i != j["items"].end(); i++) {
         counter++;
     }
 
-    if (counter != j["_meta"]["count"]) {
+    if(counter != j["_meta"]["count"]) {
         throw std::runtime_error ("Wrong value for count in _meta");
     }
     std::vector<student> students;
@@ -58,35 +59,49 @@ std::vector<student> parse_Json(nlohmann::json j) {
     return students;
 }
 
-auto get_typed_group(std::vector <student> st, int n) -> std::string {
-    if (typeid(st[n].group) == typeid(std::string)) {
-        return std::any_cast <std::string> (st[n].group);
-    } else if (typeid(st[n].group) == typeid(unsigned int)) {
-        return std::to_string(std::any_cast <unsigned int> (st[n].group));
+auto get_typed_group(const student& st) -> std::string {
+    if (st.group.type() == typeid(std::string)) {
+        return std::any_cast <std::string> (st.group);
+    } else if (st.group.type() == typeid(unsigned int)) {
+        return std::to_string(std::any_cast <unsigned int> (st.group));
     } else {
         return "null";
     }
 }
 
-std::string get_typed_avg(std::vector <student> st, int n) {
-    if (typeid(st[n].avg) == typeid (std::string)) {
-        return std::any_cast <std::string> (st[n].avg);
-    } else if (typeid(st[n].avg) == typeid(unsigned int)) {
-        return std::to_string(std::any_cast <unsigned int> (st[n].avg));
-    } else if (typeid(st[n].avg) == typeid(double)) {
-        return std::to_string(std::any_cast <double> (st[n].avg));
+auto get_typed_avg(const student& st) -> std::string {
+    if (st.avg.type() == typeid (std::string)) {
+        return std::any_cast <std::string> (st.avg);
+    } else if (st.avg.type() == typeid(unsigned int)) {
+        return std::to_string(std::any_cast <unsigned int> (st.avg));
+    } else if (st.avg.type() == typeid(double)) {
+        return std::to_string(std::any_cast <double> (st.avg));
     } else {
         return "null";
     }
 }
 
-std::string get_typed_debt(std::vector <student> st, int n) {
-    if (typeid(st[n].debt) == typeid (std::string)) {
-        return std::any_cast <std::string> (st[n].debt);
-    } if (typeid(st[n].debt) == typeid(std::vector<std::string>)) {
-        return  std::to_string(std::any_cast<std::vector<std::string>>(st[n].debt).size()) + " items";
+auto get_typed_debt(const student& st) -> std::string{
+    if (st.debt.type() == typeid (std::string)) {
+        return std::any_cast <std::string> (st.debt);
+    } if (st.debt.type() == typeid(std::vector<std::string>)) {
+        return  std::to_string(std::any_cast<std::vector<std::string>>(st.debt).size()) + " items";
     }
     else {
         return "null";
     }
+}
+
+void print_students(std::ostream& stream,  const std::vector<student>& students){
+    for (auto it = students.begin(); it != students.end(); it++){
+        stream << get_typed_group(*it)
+               << get_typed_avg(*it)
+               << get_typed_debt(*it)
+               << (*it).name;
+    }
+}
+
+std::ostream & operator << (std::ostream& ostream, const std::vector<student>& students){
+    print_students(ostream,students);
+    return ostream;
 }

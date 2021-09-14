@@ -20,8 +20,7 @@ HunterGate(
   SHA1 "95c47c92f68edb091b5d6d18924baabe02a6962a"
 )
 
-# TODO: rename project and delete this comment
-project(template VERSION 0.1.0)
+project(JSON_Parser VERSION 0.1.0)
 string(APPEND CMAKE_CXX_FLAGS " -pedantic -Werror -Wall -Wextra")
 string(APPEND CMAKE_CXX_FLAGS " -Wno-unused-command-line-argument")
 string(APPEND CMAKE_CXX_FLAGS " -Wshadow -Wnon-virtual-dtor")
@@ -29,13 +28,15 @@ string(APPEND CMAKE_CXX_FLAGS " -Wshadow -Wnon-virtual-dtor")
 hunter_add_package(GTest)
 find_package(GTest CONFIG REQUIRED)
 
+hunter_add_package(nlohmann_json)
+find_package(nlohmann_json CONFIG REQUIRED)
+
 add_library(${PROJECT_NAME} STATIC
-  # enum your files and delete this comment
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/source.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/sources/student.cpp
 )
 
 add_executable(demo
-  ${CMAKE_CURRENT_SOURCE_DIR}/demo/main.cpp
+        sources/main.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
@@ -43,6 +44,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
   "$<INSTALL_INTERFACE:include>"
 )
 
+target_link_libraries(${PROJECT_NAME} nlohmann_json::nlohmann_json)
 target_link_libraries(demo ${PROJECT_NAME})
 
 if(BUILD_TESTS)

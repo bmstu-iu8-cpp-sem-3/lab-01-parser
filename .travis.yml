@@ -2,6 +2,8 @@ os: linux
 language: minimal
 services:
   - docker
+before_install:
+  - docker build -t dyndtikj/lab-01-parcer -f Dockerfile .
 
 jobs:
   include:

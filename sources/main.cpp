@@ -5,7 +5,7 @@
 using json = nlohmann::json;
 
 int main() {
-    std::string test=
+    std::string test =
             R"({
               "items": [
                 {

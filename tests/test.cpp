@@ -7,6 +7,10 @@ TEST(Example, EmptyTest) {
     EXPECT_TRUE(true);
 }
 
+TEST(Example2, EmptyTest) {
+    EXPECT_TRUE(true);
+}
+
 TEST(ParseTest, TableTest){
     std::string wrong_string =
             R"({

@@ -79,8 +79,9 @@ std::vector<student_t> ParseString(const std::string& jsonString) {
     return students;
 }
 
-std::map<std::string, int> table_params(const std::vector<student_t>& students) {
-    std::vector<size_t> width (4);
+std::map<std::string, int> table_params(const std::vector<student_t>&
+                                        students) {
+    std::vector<size_t> width(4);
     for (const auto& student : students) {
         if (student.name.length() > width[0]) {
             width[0] = student.name.length();

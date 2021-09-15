@@ -44,14 +44,14 @@ TEST(ParseTest, TableTest){
 
     Print(students, ss);
 
-    std::string expect_string = R"(| name              | group | avg | debt   |
-|-------------------|-------|-----|--------|
-| Jmishenko Valeriy | 9     | 4.25| null   |
-|-------------------|-------|-----|--------|
-| Vitaliy Tsal      | 31    | 4   | C++    |
-|-------------------|-------|-----|--------|
-| Evgeniy Ponasenkov| IU8-31| 3.33| 3 items|
-|-------------------|-------|-----|--------|
+    std::string expect_string = R"(| name               | group  | avg  | debt    |
+|--------------------|--------|------|---------|
+| Jmishenko Valeriy  | 9      | 4.25 | null    |
+|--------------------|--------|------|---------|
+| Vitaliy Tsal       | 31     | 4    | C++     |
+|--------------------|--------|------|---------|
+| Evgeniy Ponasenkov | IU8-31 | 3.33 | 3 items |
+|--------------------|--------|------|---------|
 )";
     EXPECT_EQ(ss.str(), expect_string);
 }

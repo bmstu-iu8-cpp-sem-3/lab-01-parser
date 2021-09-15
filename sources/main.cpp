@@ -5,7 +5,7 @@
 using json = nlohmann::json;
 
 int main() {
-    std::string test =
+    std::string test_string =
             R"({
               "items": [
                 {
@@ -34,7 +34,7 @@ int main() {
                 "count": 3
               }
             })";
-    auto students = ParseString(test);
+    auto students = ParseString(test_string);
     Print(students, std::cout);
     return 0;
 }

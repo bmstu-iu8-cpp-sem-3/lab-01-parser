@@ -35,6 +35,7 @@ void from_json(const nlohmann::json& j, student_t& s);
 auto get_string(std::any value) -> std::string;
 
 std::vector<student_t> ParseString(const std::string& jsonString);
+std::vector<student_t> ParseFile(const std::string& path);
 
 std::map<std::string, int> table_params(const std::vector<student_t>& students);
 void Print(const std::vector<student_t>& students, std::ostream& ostr);

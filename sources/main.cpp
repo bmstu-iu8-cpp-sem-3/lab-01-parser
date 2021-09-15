@@ -9,25 +9,24 @@ int main() {
             R"({
               "items": [
                 {
-                  "name": "Jmishenko Valeriy",
-                  "group": "9",
-                  "avg": "4.25",
-                  "debt": "null"
+                  "name": "Ivan",
+                  "group": "IU1-11",
+                  "avg": "4.2",
+                  "debt": null
                 },
                 {
-                  "name": "Vitaliy Tsal",
-                  "group": 31,
-                  "avg": 4,
-                  "debt": "C++"
+                  "name": "Pavel",
+                  "group": 123,
+                  "avg": 5,
+                  "debt": "MatAn"
                 },
                 {
-                  "name": "Evgeniy Ponasenkov",
-                  "group": "IU8-31",
-                  "avg": 3.33,
+                  "name": "Borya",
+                  "group": "IU2-12",
+                  "avg": 4.66,
                   "debt": [
-                    "C++",
-                    "Linux",
-                    "Network"
+                    "Angem",
+                    "Programming"
                   ]
                 }
               ],

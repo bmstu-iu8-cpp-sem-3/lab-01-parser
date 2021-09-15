@@ -34,7 +34,7 @@ auto get_group(const nlohmann::json& j) -> std::any {
 }
 
 auto get_string(std::any value) -> std::string {
-    if (value.type() == typeid(nullptr_t)) {
+    if (value.type() == typeid(std::nullptr_t)) {
         return "null";
     }else if (value.type() == typeid(std::size_t)) {
         return std::to_string(std::any_cast<size_t>(value));

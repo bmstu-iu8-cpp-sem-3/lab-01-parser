@@ -3,39 +3,40 @@
 #ifndef INCLUDE_STUDENT_HPP_
 #define INCLUDE_STUDENT_HPP_
 
-#include <any>
-#include <iostream>
 #include <string>
-#include <sstream>
-#include <fstream>
 #include <vector>
-#include <iomanip>
-#include <fstream>
+#include <iostream>
+#include <ostream>
+#include <any>
 #include <nlohmann/json.hpp>
+#include <fstream>
+#include <sstream>
+#include <iomanip>
+#include <map>
 
-struct student {
+using json = nlohmann::json;
+
+struct student_t {
     std::string name;
     std::any group;
     std::any avg;
     std::any debt;
 };
+
 auto get_name(const nlohmann::json& j)  -> std::string;
 auto get_group(const nlohmann::json& j) -> std::any;
 auto get_avg(const nlohmann::json& j)   -> std::any;
 auto get_debt(const nlohmann::json& j)  -> std::any;
 
 // initialise field of structure
-void from_Json(const nlohmann::json& j, student& s);
+void from_json(const nlohmann::json& j, student_t& s);
 
-// returns a vector of students from json
-std::vector<student> parse_Json(nlohmann::json j);
+// get a string from std::any
+auto get_string(std::any value) -> std::string;
 
-// return a string object made from std::any for a field of structure student
-auto get_typed_group(const student& st) -> std::string;
-auto get_typed_avg(const student& st)   -> std::string;
-auto get_typed_debt(const student& st)  -> std::string;
+std::vector<student_t> ParseString(const std::string& jsonString);
 
-void print_students(const std::vector<student>& students, std::ostream& stream);
-std::ostream & operator << (std::ostream& ostream, const std::vector<student>& students);
+std::map<std::string, int> table_params(const std::vector<student_t>& students);
+void Print(const std::vector<student_t>& students, std::ostream& ostr);
 
 #endif // INCLUDE_STUDENT_HPP_

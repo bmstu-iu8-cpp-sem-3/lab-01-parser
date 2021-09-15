@@ -4,21 +4,37 @@
 using json = nlohmann::json;
 
 int main() {
-//
-//  json j;
-//  j["name"] = "Ivan Ivanov";
-//  j["group"] = "IU1-11";
-//  j["avg"] = 5;
-//  j["debt"] = "no";
-//
-//  student s1;
-//  from_Json(j,s1);
-//  student s2;
-//  from_Json(j,s2);
-//  std::vector<student> s;
-//  s.push_back(s1);
-//  s.push_back(s2);
-//  std::cout << get_typed_group(s1);
-//  std::cout << std::to_string(std::any_cast<unsigned int>(s[0].avg)) ;
-  return 0;
+    std::string wrong_string =
+            R"({
+              "items": [
+                {
+                  "name": "Jmishenko Valeriy",
+                  "group": "9",
+                  "avg": "4.25",
+                  "debt": "null"
+                },
+                {
+                  "name": "Vitaliy Tsal",
+                  "group": 31,
+                  "avg": 4,
+                  "debt": "C++"
+                },
+                {
+                  "name": "Evgeniy Ponasenkov",
+                  "group": "IU8-31",
+                  "avg": 3.33,
+                  "debt": [
+                    "C++",
+                    "Linux",
+                    "Network"
+                  ]
+                }
+              ],
+              "_meta": {
+                "count": 3
+              }
+            })";
+    auto students = ParseString(wrong_string);
+    Print(students, std::cout);
+    return 0;
 }

@@ -30,78 +30,103 @@ auto get_group(const nlohmann::json& j) -> std::any {
     if (j.is_string())
         return j.get<std::string>();
     else
-    return j.get<std::size_t>();
+        return j.get<std::size_t>();
 }
 
-void from_Json(const nlohmann::json& j, student& s) {
+auto get_string(std::any value) -> std::string {
+    if (value.type() == typeid(nullptr_t)) {
+        return "null";
+    }else if (value.type() == typeid(std::size_t)) {
+        return std::to_string(std::any_cast<size_t>(value));
+    }else if (value.type() == typeid(std::string)) {
+        return std::any_cast<std::string>(value);
+    }else if (value.type() == typeid(double)) {
+        return std::to_string(std::any_cast<double>(value));
+    }else {
+        return std::to_string(std::any_cast<std::vector<std::string>>(value).size()) + " items";
+    }
+}
+
+void from_json(const nlohmann::json& j, student_t& s) {
     s.name = get_name(j.at("name"));
     s.group = get_group(j.at("group"));
     s.avg = get_avg(j.at("avg"));
     s.debt = get_debt(j.at("debt"));
 }
 
-std::vector<student> parse_Json(nlohmann::json j) {
-    int counter = 0;
-    for (nlohmann::json::iterator i = j["items"].begin();
-         i != j["items"].end(); i++) {
-        counter++;
+std::vector<student_t> ParseString(const std::string& jsonString) {
+    json data = json::parse(jsonString);
+
+    // json checks
+    if (!(data["items"].is_array())) {
+        throw std::runtime_error(R"( "items" is not array!)");
+    }
+    if (data["items"].size() != (data["_meta"])["count"]) {
+        throw std::runtime_error(R"("count" in "_meta" doesn't match "items" size)");
     }
 
-    if(counter != j["_meta"]["count"]) {
-        throw std::runtime_error ("Wrong value for count in _meta");
-    }
-    std::vector<student> students;
-    for (int i = 0; i < counter; i++) {
-        student p;
-        from_Json((j["items"][i]), p);
-        students.push_back(p);
+    std::vector<student_t> students;
+    // for huge json files this can speed up a program
+    students.reserve(data["items"].size());
+
+    for (const auto& item : data["items"]) {
+        student_t st;
+        from_json(item,st) ;
+        students.push_back(st);
     }
     return students;
 }
-
-auto get_typed_group(const student& st) -> std::string {
-    if (st.group.type() == typeid(std::string)) {
-        return std::any_cast <std::string> (st.group);
-    } else if (st.group.type() == typeid(unsigned int)) {
-        return std::to_string(std::any_cast <unsigned int> (st.group));
-    } else {
-        return "null";
+std::map<std::string, int> table_params(const std::vector<student_t>& students){
+    std::vector<size_t> width (4);
+    for (const auto& student : students) {
+        if (student.name.length() > width[0]) {
+            width[0] = student.name.length();
+        }
+        if (get_string(student.group).length() > width[1]) {
+            width[1] = get_string(student.group).length();
+        }
+        if (get_string(student.avg).length() > width[2]) {
+            width[2] = get_string(student.avg).length();
+        }
+        if (get_string(student.debt).length() > width[3]) {
+            width[3] = get_string(student.debt).length();
+        }
     }
+    std::map<std::string, int> col_widths;
+    col_widths["name_width"] = static_cast<int>(width[0]);
+    col_widths["group_width"] = static_cast<int>(width[1]);
+    col_widths["avg_width"] = static_cast<int>(width[2]);
+    col_widths["debt_width"] = static_cast<int>(width[3]);
+    return col_widths;
 }
 
-auto get_typed_avg(const student& st) -> std::string {
-    if (st.avg.type() == typeid (std::string)) {
-        return std::any_cast <std::string> (st.avg);
-    } else if (st.avg.type() == typeid(unsigned int)) {
-        return std::to_string(std::any_cast <unsigned int> (st.avg));
-    } else if (st.avg.type() == typeid(double)) {
-        return std::to_string(std::any_cast <double> (st.avg));
-    } else {
-        return "null";
-    }
-}
+void Print(const std::vector<student_t>& students, std::ostream& ostr) {
+    auto col_widths = table_params(students);
 
-auto get_typed_debt(const student& st) -> std::string{
-    if (st.debt.type() == typeid (std::string)) {
-        return std::any_cast <std::string> (st.debt);
-    } if (st.debt.type() == typeid(std::vector<std::string>)) {
-        return  std::to_string(std::any_cast<std::vector<std::string>>(st.debt).size()) + " items";
-    }
-    else {
-        return "null";
-    }
-}
+    std::string table_line;
+    table_line += "|-";
+    table_line += (std::string(col_widths["name_width"],'-'));
+    table_line += "|-";
+    table_line += (std::string(col_widths["group_width"],'-'));
+    table_line += "|-";
+    table_line += (std::string(col_widths["avg_width"],'-'));
+    table_line += "|-";
+    table_line += (std::string(col_widths["debt_width"],'-'));
+    table_line += "|";
 
-void print_students(std::ostream& stream,  const std::vector<student>& students){
-    for (auto it = students.begin(); it != students.end(); it++){
-        stream << get_typed_group(*it)
-               << get_typed_avg(*it)
-               << get_typed_debt(*it)
-               << (*it).name;
-    }
-}
+    ostr << "| " << std::left << std::setw(col_widths["name_width"]) << "name";
+    ostr << "| " << std::left << std::setw(col_widths["group_width"]) << "group";
+    ostr << "| " << std::left << std::setw(col_widths["avg_width"]) << "avg";
+    ostr << "| " << std::left << std::setw(col_widths["debt_width"]) << "debt"
+         << "|" << std::endl;
+    ostr << std::right << table_line << std::endl;
 
-std::ostream & operator << (std::ostream& ostream, const std::vector<student>& students){
-    print_students(ostream,students);
-    return ostream;
+    for (auto& student : students) {
+        ostr << "| " << std::left << std::setw(col_widths["name_width"]) << student.name;
+        ostr << "| " << std::left << std::setw(col_widths["group_width"]) << get_string(student.group);
+        ostr << "| " << std::left << std::setw(col_widths["avg_width"]) << get_string(student.avg);
+        ostr << "| " << std::left << std::setw(col_widths["debt_width"]) << get_string(student.debt) << "|"
+             << std::endl;
+        ostr << std::right << table_line << std::endl;
+    }
 }

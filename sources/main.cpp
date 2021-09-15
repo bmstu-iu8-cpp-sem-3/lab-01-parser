@@ -36,5 +36,6 @@ int main() {
             })";
     auto students = ParseString(wrong_string);
     Print(students, std::cout);
+    std::cout << "HI";
     return 0;
 }

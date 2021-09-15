@@ -43,7 +43,8 @@ auto get_string(std::any value) -> std::string {
     }else if (value.type() == typeid(double)) {
         return std::to_string(std::any_cast<double>(value));
     }else {
-        return std::to_string(std::any_cast<std::vector<std::string>>(value).size()) + " items";
+        return std::to_string(std::any_cast<std::vector<std::string>>(value).size())
+                                + " items";
     }
 }
 
@@ -71,7 +72,7 @@ std::vector<student_t> ParseString(const std::string& jsonString) {
 
     for (const auto& item : data["items"]) {
         student_t st;
-        from_json(item,st) ;
+        from_json(item, st);
         students.push_back(st);
     }
     return students;
@@ -105,28 +106,34 @@ void Print(const std::vector<student_t>& students, std::ostream& ostr) {
 
     std::string table_line;
     table_line += "|-";
-    table_line += (std::string(col_widths["name_width"],'-'));
+    table_line += (std::string(col_widths["name_width"], '-'));
     table_line += "|-";
-    table_line += (std::string(col_widths["group_width"],'-'));
+    table_line += (std::string(col_widths["group_width"], '-'));
     table_line += "|-";
-    table_line += (std::string(col_widths["avg_width"],'-'));
+    table_line += (std::string(col_widths["avg_width"], '-'));
     table_line += "|-";
-    table_line += (std::string(col_widths["debt_width"],'-'));
+    table_line += (std::string(col_widths["debt_width"], '-'));
     table_line += "|";
 
-    ostr << "| " << std::left << std::setw(col_widths["name_width"]) << "name";
-    ostr << "| " << std::left << std::setw(col_widths["group_width"]) << "group";
-    ostr << "| " << std::left << std::setw(col_widths["avg_width"]) << "avg";
-    ostr << "| " << std::left << std::setw(col_widths["debt_width"]) << "debt"
-         << "|" << std::endl;
+    ostr << "| " << std::left << std::setw(col_widths["name_width"])
+         << "name";
+    ostr << "| " << std::left << std::setw(col_widths["group_width"])
+         << "group";
+    ostr << "| " << std::left << std::setw(col_widths["avg_width"])
+         << "avg";
+    ostr << "| " << std::left << std::setw(col_widths["debt_width"])
+         << "debt" << "|" << std::endl;
     ostr << std::right << table_line << std::endl;
 
     for (auto& student : students) {
-        ostr << "| " << std::left << std::setw(col_widths["name_width"]) << student.name;
-        ostr << "| " << std::left << std::setw(col_widths["group_width"]) << get_string(student.group);
-        ostr << "| " << std::left << std::setw(col_widths["avg_width"]) << get_string(student.avg);
-        ostr << "| " << std::left << std::setw(col_widths["debt_width"]) << get_string(student.debt) << "|"
-             << std::endl;
+        ostr << "| " << std::left << std::setw(col_widths["name_width"])
+             << student.name;
+        ostr << "| " << std::left << std::setw(col_widths["group_width"])
+             << get_string(student.group);
+        ostr << "| " << std::left << std::setw(col_widths["avg_width"])
+             << get_string(student.avg);
+        ostr << "| " << std::left << std::setw(col_widths["debt_width"])
+             << get_string(student.debt) << "|" << std::endl;
         ostr << std::right << table_line << std::endl;
     }
 }

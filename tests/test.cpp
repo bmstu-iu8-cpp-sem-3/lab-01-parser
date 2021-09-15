@@ -43,7 +43,7 @@ TEST(Json_parser_test, parse_string) {
     std::string compare =
             R"(| name  | group  | avg      | debt    |
 |-------|--------|----------|---------|
-| Ivan  | IU1-11 | 4.2      | null w   |
+| Ivan  | IU1-11 | 4.2      | null    |
 |-------|--------|----------|---------|
 | Pavel | 123    | 5        | MatAn   |
 |-------|--------|----------|---------|

@@ -57,7 +57,38 @@ void from_json(const nlohmann::json& j, student_t& s) {
 }
 
 std::vector<student_t> ParseString(const std::string& jsonString) {
+    // parse string literal
     json data = json::parse(jsonString);
+
+    // json checks
+    if (!(data["items"].is_array())) {
+        throw std::runtime_error(R"( "items" is not array!)");
+    }
+    if (data["items"].size() != (data["_meta"])["count"]) {
+        throw std::runtime_error(R"("count" in "_meta" doesn't match "items" size)");
+    }
+
+    std::vector<student_t> students;
+    // for huge json files this can speed up a program
+    students.reserve(data["items"].size());
+
+    for (const auto& item : data["items"]) {
+        student_t st;
+        from_json(item, st);
+        students.push_back(st);
+    }
+    return students;
+}
+
+std::vector<student_t> ParseFile(const std::string& path){
+    std::ifstream file(path);
+
+    if (!file) {
+        throw std::runtime_error{"File was not opened"};
+    }
+
+    json data;
+    file >> data;
 
     // json checks
     if (!(data["items"].is_array())) {
@@ -97,10 +128,10 @@ std::map<std::string, int> table_params(const std::vector<student_t>&
         }
     }
     std::map<std::string, int> col_widths;
-    col_widths["name_width"] = static_cast<int>(width[0]);
-    col_widths["group_width"] = static_cast<int>(width[1]);
-    col_widths["avg_width"] = static_cast<int>(width[2]);
-    col_widths["debt_width"] = static_cast<int>(width[3]);
+    col_widths["name_width"] = static_cast<int>(width[0]) + 1;
+    col_widths["group_width"] = static_cast<int>(width[1]) + 1;
+    col_widths["avg_width"] = static_cast<int>(width[2]) + 1;
+    col_widths["debt_width"] = static_cast<int>(width[3]) + 1;
     return col_widths;
 }
 

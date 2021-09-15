@@ -4,8 +4,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 option(BUILD_TESTS "Build tests" ON)
-option(BUILD_DOCS "Build documentation" OFF)
-option(BUILD_COVERAGE "Build code coverage" OFF)
+option(BUILD_DOCS "Build documentation" ON)
+option(BUILD_COVERAGE "Build code coverage" ON)
 
 set(
   HUNTER_CACHE_SERVERS
@@ -49,7 +49,6 @@ target_link_libraries(demo ${PROJECT_NAME})
 
 if(BUILD_TESTS)
   add_executable(tests
-    # TODO: enum your files and delete this comment
     ${CMAKE_CURRENT_SOURCE_DIR}/tests/test.cpp
   )
   target_link_libraries(tests ${PROJECT_NAME} GTest::gtest_main)

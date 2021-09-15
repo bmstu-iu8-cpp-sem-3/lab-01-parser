@@ -7,6 +7,55 @@ TEST(Example, EmptyTest) {
     EXPECT_TRUE(true);
 }
 
+TEST(ParseTest, TableTest){
+    std::string wrong_string =
+            R"({
+  "items": [
+    {
+      "name": "Jmishenko Valeriy",
+      "group": "9",
+      "avg": "4.25",
+      "debt": null
+    },
+    {
+      "name": "Vitaliy Tsal",
+      "group": 31,
+      "avg": 4,
+      "debt": "C++"
+    },
+    {
+      "name": "Evgeniy Ponasenkov",
+      "group": "IU8-31",
+      "avg": 3.33,
+      "debt": [
+        "C++",
+        "Linux",
+        "Network"
+      ]
+    }
+  ],
+  "_meta": {
+    "count": 3
+  }
+})";
+    auto students = ParseString(wrong_string);
+
+    std::stringstream ss;
+
+    Print(students, ss);
+
+    std::string expect_string = R"(| name              | group | avg | debt   |
+|-------------------|-------|-----|--------|
+| Jmishenko Valeriy | 9     | 4.25| null   |
+|-------------------|-------|-----|--------|
+| Vitaliy Tsal      | 31    | 4   | C++    |
+|-------------------|-------|-----|--------|
+| Evgeniy Ponasenkov| IU8-31| 3.33| 3 items|
+|-------------------|-------|-----|--------|
+)";
+    EXPECT_EQ(ss.str(), expect_string);
+}
+
 //TEST(Json_parser_test, parse_string) {
 //    std::string test_string =
 //            R"({

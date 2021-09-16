@@ -50,35 +50,16 @@ target_link_libraries(demo ${PROJECT_NAME})
 if(BUILD_TESTS)
   add_executable(tests
           ${CMAKE_CURRENT_SOURCE_DIR}/tests/test.cpp
-          ${CMAKE_CURRENT_SOURCE_DIR}/sources/json_file1.json
   )
-  set(RESOURCE_FILES
-          {CMAKE_CURRENT_SOURCE_DIR}/sources/json_file1.json
-          )
-  set_target_properties(tests PROPERTIES
-          RESOURCE "${RESOURCE_FILES}"
-          )
 
   target_link_libraries(tests ${PROJECT_NAME} GTest::gtest_main)
 
-#  set(target_RESOURCE_FILES
-#          {CMAKE_CURRENT_SOURCE_DIR}/sources
-#          )
-#
-#  set_source_files_properties(
-#          ${target_RESOURCE_FILES}
-#          PROPERTIES
-#          HEADER_FILE_ONLY TRUE # it doesn't need to compile
-#  )
-#
-##  list(APPEND
-##          tests/test.cpp
-##          ${target_RESOURCE_FILES}
-##          )
-#  target_include_directories(tests
-#          PRIVATE
-#          ${target_RESOURCE_FILES}
-#          )
+  target_include_directories(tests
+          PRIVATE
+          ${CMAKE_CURRENT_BINARY_DIR}/RESOURCES
+          )
+  file(COPY ${CMAKE_CURRENT_BINARY_DIR}/RESOURCES/json_file1.json
+          DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
   enable_testing()
   add_test(NAME unit_tests COMMAND tests)
 endif()

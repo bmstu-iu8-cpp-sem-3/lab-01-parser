@@ -2,7 +2,9 @@
 
 #include <gtest/gtest.h>
 #include "student.hpp"
-
+TEST(Example, test) {
+    EXPECT_TRUE(true);
+}
 //TEST(Json_parser_test, parse_string2) {
 //    std::string test_string =
 //            R"({

@@ -50,13 +50,14 @@ target_link_libraries(demo ${PROJECT_NAME})
 if(BUILD_TESTS)
   add_executable(tests
           ${CMAKE_CURRENT_SOURCE_DIR}/tests/test.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/sources/json_file1.json
   )
 
   target_link_libraries(tests ${PROJECT_NAME} GTest::gtest_main)
 
-  set(target_RESOURCE_FILES
-          {CMAKE_CURRENT_SOURCE_DIR}/sources
-          )
+#  set(target_RESOURCE_FILES
+#          {CMAKE_CURRENT_SOURCE_DIR}/sources
+#          )
 #
 #  set_source_files_properties(
 #          ${target_RESOURCE_FILES}
@@ -73,7 +74,7 @@ if(BUILD_TESTS)
 #          ${target_RESOURCE_FILES}
 #          )
   enable_testing()
-  add_test(NAME unit_tests COMMAND tests WORKING_DIRECTORY "${target_RESORSE_files}")
+  add_test(NAME unit_tests COMMAND tests)
 endif()
 
 if(BUILD_COVERAGE)

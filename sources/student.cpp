@@ -46,7 +46,7 @@ auto get_str_group(const std::any& group) -> std::string {
 }
 
 auto get_str_avg(const std::any& avg) -> std::string {
-    if (avg.type() == typeid (std::string)) {
+    if (avg.type() == typeid(std::string)) {
         return std::any_cast <std::string> (avg);
     } else if (avg.type() == typeid(size_t)) {
         return std::to_string(std::any_cast <size_t> (avg));
@@ -60,7 +60,7 @@ auto get_str_avg(const std::any& avg) -> std::string {
 }
 
 auto get_str_debt(const std::any& debt) -> std::string {
-    if (debt.type() == typeid (std::string)) {
+    if (debt.type() == typeid(std::string)) {
         return std::any_cast<std::string>(debt);
     } else if (debt.type() == typeid(std::nullptr_t)) {
         return "null";

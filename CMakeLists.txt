@@ -64,10 +64,11 @@ if(BUILD_TESTS)
           HEADER_FILE_ONLY TRUE # it doesn't need to compile
   )
 
-  list(APPEND
-          tests/test.cpp
-          ${target_RESOURCE_FILES}
-          )
+#  list(APPEND
+#          tests/test.cpp
+#          ${target_RESOURCE_FILES}
+#          )
+  target_include_directories(${target_RESOURCE_FILES})
   enable_testing()
   add_test(NAME unit_tests COMMAND tests)
 endif()

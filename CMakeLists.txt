@@ -55,7 +55,7 @@ if(BUILD_TESTS)
   target_link_libraries(tests ${PROJECT_NAME} GTest::gtest_main)
 
   set(target_RESOURCE_FILES
-          {CMAKE_CURRENT_SOURCE_DIR}/sources/json_file1.json
+          {CMAKE_CURRENT_SOURCE_DIR}/sources
           )
 
   set_source_files_properties(
@@ -68,7 +68,10 @@ if(BUILD_TESTS)
 #          tests/test.cpp
 #          ${target_RESOURCE_FILES}
 #          )
-  target_include_directories(${target_RESOURCE_FILES})
+  target_include_directories(tests
+          PRIVATE
+          ${target_RESOURCE_FILES}
+          )
   enable_testing()
   add_test(NAME unit_tests COMMAND tests)
 endif()

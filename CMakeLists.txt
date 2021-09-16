@@ -58,8 +58,8 @@ if(BUILD_TESTS)
           PRIVATE
           ${CMAKE_CURRENT_SOURCE_DIR}/tests/RESOURSCES
           )
-#  file(COPY ${CMAKE_CURRENT_BINARY_DIR}/RESOURSCES/json_file1.json
-#          DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+  file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/tests/RESOURSCES/json_file1.json
+          DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
   enable_testing()
   add_test(NAME unit_tests COMMAND tests)
 endif()

@@ -9,6 +9,7 @@ int main(int argc, char* argv[]) {
         for (int i = 1; i < argc; i++) {
             auto students = parse_json_file(argv[i]);
             Print(students, std::cout);
+            std::cout << "WHAT";
         }
     } else {
         throw std::invalid_argument("Expected a path for a *.json file");

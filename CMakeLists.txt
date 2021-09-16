@@ -65,7 +65,7 @@ if(BUILD_TESTS)
   )
 
   list(APPEND
-          project_SOURCE_FILES
+          tests/test.cpp
           ${target_RESOURCE_FILES}
           )
   enable_testing()

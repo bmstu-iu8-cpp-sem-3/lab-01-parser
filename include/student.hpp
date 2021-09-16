@@ -50,6 +50,7 @@ auto get_str_debt(const std::any& debt)   -> std::string;
 std::vector<student_t> parse_json_file(const std::string& path);
 
 col_widths table_params(const std::vector<student_t>& students);
-void Print(const std::vector<student_t>& students, std::ostream& ostr = std::cout);
+void Print(const std::vector<student_t>& students,
+           std::ostream& ostr = std::cout);
 
 #endif // INCLUDE_STUDENT_HPP_

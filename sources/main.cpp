@@ -4,37 +4,15 @@
 
 using json = nlohmann::json;
 
-int main() {
-    std::string test_string =
-            R"({
-              "items": [
-                {
-                  "name": "Ivan",
-                  "group": "IU1-11",
-                  "avg": "4.2",
-                  "debt": null
-                },
-                {
-                  "name": "Pavel",
-                  "group": 123,
-                  "avg": 5,
-                  "debt": "MatAn"
-                },
-                {
-                  "name": "Borya",
-                  "group": "IU2-12",
-                  "avg": 4.66,
-                  "debt": [
-                    "Angem",
-                    "Programming"
-                  ]
-                }
-              ],
-              "_meta": {
-                "count": 3
-              }
-            })";
-    auto students = ParseString(test_string);
-    Print(students, std::cout);
+int main(int argc, char* argv[]) {
+    if (argc != 1) {
+        for (int i = 1; i <= argc; i++) {
+            auto students = parse_json_file(argv[i]);
+            Print(students, std::cout);
+        }
+    }
+    else {
+        throw std::invalid_argument("Expected a path for a *.json file");
+    }
     return 0;
 }

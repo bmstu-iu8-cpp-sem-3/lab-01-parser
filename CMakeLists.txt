@@ -52,6 +52,12 @@ if(BUILD_TESTS)
           ${CMAKE_CURRENT_SOURCE_DIR}/tests/test.cpp
           ${CMAKE_CURRENT_SOURCE_DIR}/sources/json_file1.json
   )
+  set(RESOURCE_FILES
+          {CMAKE_CURRENT_SOURCE_DIR}/sources/json_file1.json
+          )
+  set_target_properties(tests PROPERTIES
+          RESOURCE "${RESOURCE_FILES}"
+          )
 
   target_link_libraries(tests ${PROJECT_NAME} GTest::gtest_main)
 

@@ -86,6 +86,7 @@ if(BUILD_COVERAGE)
   coverage_evaluate()
 endif()
 
+
 if(BUILD_DOCS)
   set(DOXYGEN_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/_docs)
   set(DOXYGEN_EXAMPLE_PATH examples)

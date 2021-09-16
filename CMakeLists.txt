@@ -57,23 +57,23 @@ if(BUILD_TESTS)
   set(target_RESOURCE_FILES
           {CMAKE_CURRENT_SOURCE_DIR}/sources
           )
-
-  set_source_files_properties(
-          ${target_RESOURCE_FILES}
-          PROPERTIES
-          HEADER_FILE_ONLY TRUE # it doesn't need to compile
-  )
-
-#  list(APPEND
-#          tests/test.cpp
+#
+#  set_source_files_properties(
+#          ${target_RESOURCE_FILES}
+#          PROPERTIES
+#          HEADER_FILE_ONLY TRUE # it doesn't need to compile
+#  )
+#
+##  list(APPEND
+##          tests/test.cpp
+##          ${target_RESOURCE_FILES}
+##          )
+#  target_include_directories(tests
+#          PRIVATE
 #          ${target_RESOURCE_FILES}
 #          )
-  target_include_directories(tests
-          PRIVATE
-          ${target_RESOURCE_FILES}
-          )
   enable_testing()
-  add_test(NAME unit_tests COMMAND tests)
+  add_test(NAME unit_tests COMMAND tests WORKING_DIRECTORY "${target_RESORSE_files}")
 endif()
 
 if(BUILD_COVERAGE)

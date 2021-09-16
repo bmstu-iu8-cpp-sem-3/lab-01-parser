@@ -39,12 +39,13 @@ auto get_str_group(const std::any& group) -> std::string {
     } else if (group.type() == typeid(size_t)) {
         return std::to_string(std::any_cast <size_t> (group));
     } else {
-        throw std::invalid_argument("Expected string or unsigned value for group");
+        throw std::invalid_argument(
+                "Expected string or unsigned value for group");
         //return "null";
     }
 }
 
-auto get_str_avg(const std::any& avg)     -> std::string {
+auto get_str_avg(const std::any& avg) -> std::string {
     if (avg.type() == typeid (std::string)) {
         return std::any_cast <std::string> (avg);
     } else if (avg.type() == typeid(size_t)) {
@@ -52,20 +53,24 @@ auto get_str_avg(const std::any& avg)     -> std::string {
     } else if (avg.type() == typeid(double)) {
         return std::to_string(std::any_cast <double> (avg));
     } else {
-        throw std::invalid_argument("Expected string, double or unsigned value for avg");
+        throw std::invalid_argument(
+                "Expected string, double or unsigned value for avg");
         //return "null";
     }
 }
 
-auto get_str_debt(const std::any& debt)   -> std::string {
+auto get_str_debt(const std::any& debt) -> std::string {
     if (debt.type() == typeid (std::string)) {
         return std::any_cast<std::string>(debt);
     } else if (debt.type() == typeid(std::nullptr_t)) {
         return "null";
     } else if (debt.type() == typeid(std::vector<std::string>)) {
-        return  std::to_string(std::any_cast<std::vector<std::string>>(debt).size()) + " items";
+        return std::to_string(
+                std::any_cast<std::vector<std::string>>(debt).size())
+                + " items";
     } else {
-        throw std::invalid_argument("Expected string or array of strings for debt");
+        throw std::invalid_argument(
+                "Expected string or array of strings for debt");
         //return "null";
     }
 }
@@ -108,7 +113,7 @@ std::vector<student_t> parse_json_file(const std::string& path){
 }
 
 col_widths table_params(const std::vector<student_t>& students) {
-    std::vector<size_t> width(4,0);
+    std::vector<size_t> width(4, 0);
     for (const auto& student : students) {
         if (student.name.length() > width[0]) {
             width[0] = student.name.length();
@@ -123,7 +128,7 @@ col_widths table_params(const std::vector<student_t>& students) {
             width[3] = get_str_debt(student.debt).length();
         }
     }
-    col_widths result {0, 0, 0 ,0};
+    col_widths result {0, 0, 0 , 0};
     result.name_width = static_cast<int>(width[0]) + 1;
     result.group_width = static_cast<int>(width[1]) + 1;
     result.avg_width = static_cast<int>(width[2]) + 1;

@@ -54,12 +54,12 @@ if(BUILD_TESTS)
 
   target_link_libraries(tests ${PROJECT_NAME} GTest::gtest_main)
 
-  target_include_directories(tests
-          PRIVATE
-          ${CMAKE_CURRENT_SOURCE_DIR}/tests/RESOURSCES
-          )
-  file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/tests/RESOURSCES/json_file1.json
-          DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+#  target_include_directories(tests
+#          PRIVATE
+#          ${CMAKE_CURRENT_SOURCE_DIR}/tests/RESOURSCES
+#          )
+#  file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/tests/RESOURSCES/json_file1.json
+#          DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
   add_custom_command(TARGET tests POST_BUILD
                      COMMAND ${CMAKE_COMMAND} -E copy_directory
                       ${CMAKE_CURRENT_SOURCE_DIR}/tests/RESOURSCES

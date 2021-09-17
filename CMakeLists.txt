@@ -63,7 +63,7 @@ if(BUILD_TESTS)
   add_custom_command(TARGET tests PRE_BUILD
                      COMMAND ${CMAKE_COMMAND} -E copy_directory
                       ${CMAKE_CURRENT_SOURCE_DIR}/tests/RESOURSCES
-                      $<TARGET_FILE_DIR:tests>
+                      $<TARGET_FILE_DIR:tests>/Testing
                       )
   enable_testing()
   add_test(NAME unit_tests COMMAND tests)

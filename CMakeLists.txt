@@ -60,7 +60,7 @@ if(BUILD_TESTS)
 #          )
 #  file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/tests/RESOURSCES/json_file1.json
 #          DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-  add_custom_command(TARGET tests POST_BUILD
+  add_custom_command(TARGET tests PRE_BUILD
                      COMMAND ${CMAKE_COMMAND} -E copy_directory
                       ${CMAKE_CURRENT_SOURCE_DIR}/tests/RESOURSCES
                       $<TARGET_FILE_DIR:tests>

@@ -23,22 +23,22 @@ TEST(Json_parser_test, parse_right_file) {
     EXPECT_EQ(compare,parsed.str());
 }
 
-// this test must fall
-TEST(Json_parser_test, error_parse_right_file) {
-    auto students = parse_json_file("json_file1.json");
-    std::stringstream parsed;
-    Print(students, parsed);
-    std::string compare =
-            R"(| name  | group  | avg      | debt    |
-|-------|--------|----------|---------|
-| Ivan  | IU1-11 | 4.2      | null    |
-|-------|--------|----------|---------|
-| Pavel | 123    | 5        | MatAn   |
-|-------|--------|----------|---------|
-| Borya | IU2-12 | errrrrr  | 2 items |
-|-------|--------|----------|---------|
-)";
-    EXPECT_EQ(compare,parsed.str());
-}
+//// this test must fall
+//TEST(Json_parser_test, error_parse_right_file) {
+//    auto students = parse_json_file("json_file1.json");
+//    std::stringstream parsed;
+//    Print(students, parsed);
+//    std::string compare =
+//            R"(| name  | group  | avg      | debt    |
+//|-------|--------|----------|---------|
+//| Ivan  | IU1-11 | 4.2      | null    |
+//|-------|--------|----------|---------|
+//| Pavel | 123    | 5        | MatAn   |
+//|-------|--------|----------|---------|
+//| Borya | IU2-12 | errrrrr  | 2 items |
+//|-------|--------|----------|---------|
+//)";
+//    EXPECT_EQ(compare,parsed.str());
+//}
 
 

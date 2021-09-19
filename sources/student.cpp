@@ -89,7 +89,7 @@ std::vector<student_t> parse_json_file(const std::string& path){
         throw std::runtime_error{"File was not opened"};
     }
 
-    json data;
+    nlohmann::json data;
     file >> data;
 
     // json checks

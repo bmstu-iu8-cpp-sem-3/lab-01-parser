@@ -2,9 +2,6 @@
 
 #include <gtest/gtest.h>
 #include "student.hpp"
-TEST(Example, test) {
-    EXPECT_TRUE(true);
-}
 
 TEST(Json_parser_test, parse_right_file) {
     auto students = parse_json_file("json_file1.json");
@@ -23,7 +20,6 @@ TEST(Json_parser_test, parse_right_file) {
     EXPECT_EQ(compare,parsed.str());
 }
 
-// this test must fall
 TEST(Json_parser_test, meta_error) {
     EXPECT_THROW(parse_json_file("json_file2.json"), std::runtime_error);
 }
@@ -35,5 +31,18 @@ TEST(Json_parser_test, items_not_an_array) {
 TEST(Json_parser_test, wrong_path_error) {
     EXPECT_THROW(parse_json_file("json_file.json"), std::runtime_error);
 }
+
+TEST(Json_parser_test, wrong_type_group) {
+    EXPECT_THROW(parse_json_file("json_file4.json"), std::invalid_argument);
+}
+
+TEST(Json_parser_test, wrong_type_avg) {
+    EXPECT_THROW(parse_json_file("json_file5.json"), std::invalid_argument);
+}
+
+TEST(Json_parser_test, wrong_type_debt) {
+    EXPECT_THROW(parse_json_file("json_file6.json"), std::invalid_argument);
+}
+
 
 

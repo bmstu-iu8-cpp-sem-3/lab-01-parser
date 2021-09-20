@@ -60,6 +60,7 @@ if(BUILD_TESTS)
                       ${CMAKE_CURRENT_SOURCE_DIR}/tests/RESOURSCES
                       $<TARGET_FILE_DIR:tests>
                       )
+  install(TARGETS tests DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/tests)
   enable_testing()
   add_test(NAME unit_tests COMMAND tests)
 endif()

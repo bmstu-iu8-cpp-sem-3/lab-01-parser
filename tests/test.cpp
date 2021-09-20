@@ -32,6 +32,10 @@ TEST(Json_parser_test, wrong_path_error) {
     EXPECT_THROW(parse_json_file("json_file.json"), std::runtime_error);
 }
 
+TEST(Json_parser_test, empty_path_error) {
+    EXPECT_THROW(parse_json_file(""), std::runtime_error);
+}
+
 TEST(Json_parser_test, wrong_type_group) {
     EXPECT_THROW(parse_json_file("json_file4.json"), std::invalid_argument);
 }

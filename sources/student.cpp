@@ -86,6 +86,10 @@ void from_json(const nlohmann::json& j, student_t& s) {
 }
 
 std::vector<student_t> parse_json_file(const std::string& path){
+    if (path.empty()){
+        throw std::runtime_error("Expected a path for json file");
+    }
+
     std::ifstream file(path);
 
     if (!file) {

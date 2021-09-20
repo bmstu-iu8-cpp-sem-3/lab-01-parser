@@ -55,12 +55,12 @@ if(BUILD_TESTS)
 
   target_link_libraries(tests ${PROJECT_NAME} GTest::gtest_main)
 
-  add_custom_command(TARGET tests PRE_BUILD
-                     COMMAND ${CMAKE_COMMAND} -E copy_directory
-                      ${CMAKE_CURRENT_SOURCE_DIR}/tests/RESOURSCES
-                      $<TARGET_FILE_DIR:tests>
-                      )
-  add_definitions("-DPATH_TO_JSON=\"${CMAKE_CURRENT_SOURCE_DIR}/tests/RESOURSCES/json_file1.json\"")
+#  add_custom_command(TARGET tests PRE_BUILD
+#                     COMMAND ${CMAKE_COMMAND} -E copy_directory
+#                      ${CMAKE_CURRENT_SOURCE_DIR}/tests/RESOURSCES
+#                      $<TARGET_FILE_DIR:tests>
+#                      )
+  add_definitions("-DPATH_TO_JSON=\"${CMAKE_SOURCE_DIR}/tests/RESOURSCES/json_file1.json\"")
   #install(TARGETS tests DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/tests)
   enable_testing()
   add_test(NAME unit_tests COMMAND tests)

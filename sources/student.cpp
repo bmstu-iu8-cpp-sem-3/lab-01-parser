@@ -3,7 +3,10 @@
 #include <student.hpp>
 
 auto get_name(const nlohmann::json& j) -> std::string {
-    return j.get<std::string>();
+    if (j.is_string())
+        return j.get<std::string>();
+    else
+        throw std::invalid_argument("Expected string in name");
 }
 
 auto get_debt(const nlohmann::json& j) -> std::any {
@@ -11,8 +14,11 @@ auto get_debt(const nlohmann::json& j) -> std::any {
         return nullptr;
     else if (j.is_string())
         return j.get<std::string>();
-    else
+    else if (j.is_array())
         return j.get<std::vector<std::string> >();
+    else
+        throw std::invalid_argument(
+                "Expected string or array of strings for debt");
 }
 
 auto get_avg(const nlohmann::json& j) -> std::any {
@@ -22,57 +28,54 @@ auto get_avg(const nlohmann::json& j) -> std::any {
         return j.get<std::string>();
     else if (j.is_number_float())
         return j.get<double>();
-    else
+    else if (j.is_number_unsigned())
         return j.get<std::size_t>();
+    else
+        throw std::invalid_argument(
+                "Expected string, double or unsigned value for avg");
 }
 
 auto get_group(const nlohmann::json& j) -> std::any {
     if (j.is_string())
         return j.get<std::string>();
-    else
+    else if  (j.is_number_unsigned())
         return j.get<std::size_t>();
+    else
+        throw std::invalid_argument(
+                "Expected string or unsigned value for group");
 }
 
 auto get_str_group(const std::any& group) -> std::string {
-    if (group.type() == typeid(std::string)) {
+    if (group.type() == typeid(std::string))
         return std::any_cast <std::string> (group);
-    } else if (group.type() == typeid(size_t)) {
+    else if (group.type() == typeid(size_t))
         return std::to_string(std::any_cast <size_t> (group));
-    } else {
-        throw std::invalid_argument(
-                "Expected string or unsigned value for group");
-        //return "null";
-    }
+    else
+        return "null";
 }
 
 auto get_str_avg(const std::any& avg) -> std::string {
-    if (avg.type() == typeid(std::string)) {
+    if (avg.type() == typeid(std::string))
         return std::any_cast <std::string> (avg);
-    } else if (avg.type() == typeid(size_t)) {
+    else if (avg.type() == typeid(size_t))
         return std::to_string(std::any_cast <size_t> (avg));
-    } else if (avg.type() == typeid(double)) {
+    else if (avg.type() == typeid(double))
         return std::to_string(std::any_cast <double> (avg));
-    } else {
-        throw std::invalid_argument(
-                "Expected string, double or unsigned value for avg");
-        //return "null";
-    }
+    else
+        return "null";
 }
 
 auto get_str_debt(const std::any& debt) -> std::string {
-    if (debt.type() == typeid(std::string)) {
+    if (debt.type() == typeid(std::string))
         return std::any_cast<std::string>(debt);
-    } else if (debt.type() == typeid(std::nullptr_t)) {
+    else if (debt.type() == typeid(std::nullptr_t))
         return "null";
-    } else if (debt.type() == typeid(std::vector<std::string>)) {
+    else if (debt.type() == typeid(std::vector<std::string>))
         return std::to_string(
                 std::any_cast<std::vector<std::string>>(debt).size())
                 + " items";
-    } else {
-        throw std::invalid_argument(
-                "Expected string or array of strings for debt");
-        //return "null";
-    }
+    else
+        return "null";
 }
 
 void from_json(const nlohmann::json& j, student_t& s) {

@@ -60,11 +60,7 @@ if(BUILD_TESTS)
                       ${CMAKE_CURRENT_SOURCE_DIR}/tests/RESOURSCES
                       $<TARGET_FILE_DIR:tests>
                       )
-  target_include_directories(tests PUBLIC
-         # $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/tests/RESOURSCES>)
-          $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/tests/RESOURSCES>)
-  #add_definitions("-DPATH_TO_JSON=\"${CMAKE_SOURCE_DIR}/tests/RESOURSCES/\"")
-  #install(TARGETS tests DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/tests)
+  add_definitions("-DRES_DIR=\"${CMAKE_SOURCE_DIR}/tests/RESOURSCES/\"")
   enable_testing()
   add_test(NAME unit_tests COMMAND tests)
 endif()

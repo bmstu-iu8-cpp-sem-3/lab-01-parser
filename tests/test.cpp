@@ -5,7 +5,7 @@
 
 
 TEST(Json_parser_test, parse_right_file) {
-    auto students = parse_json_file(PATH_TO_JSON);
+    auto students = parse_json_file(PATH_TO_JSON"json_file1.json");
     std::stringstream parsed;
     Print(students, parsed);
     std::string compare =

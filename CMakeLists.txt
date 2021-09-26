@@ -84,7 +84,7 @@ if(BUILD_DOCS)
   find_package(Doxygen)
   doxygen_add_docs(docs include)
   install(DIRECTORY ${DOXYGEN_OUTPUT_DIRECTORY}/man DESTINATION share)
-  # add_dependencies(install docs) need to call target docs before install or package
+  #add_dependencies(install docs) need to call target docs before install or package
 endif()
 
 include(CPackConfig.cmake)

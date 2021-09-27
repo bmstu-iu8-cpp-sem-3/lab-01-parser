@@ -1,8 +1,6 @@
 // Copyright 2021 Your MaxV <geraldy12319@gmail.com>
 #include <student.hpp>
 
-using json = nlohmann::json;
-
 int main(int argc, char* argv[]) {
     if (argc != 1) {
         for (int i = 1; i < argc; i++) {

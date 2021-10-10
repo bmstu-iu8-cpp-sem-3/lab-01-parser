@@ -28,7 +28,7 @@ jobs:
 
       - name: checks
         run:
-          docker run -v `pwd`:`pwd` -w `pwd` --cap-add=SYS_PTRACE -t rusdevops/bootstrap-cpp scripts/checks.sh
+          docker run -v `pwd`:`pwd` -w `pwd` --cap-add=SYS_PTRACE -t rusdevops/toolbox-cpp scripts/checks.sh
 
 
   tests:
@@ -45,7 +45,7 @@ jobs:
 
       - name: tests
         run:
-          docker run -v `pwd`:`pwd` -w `pwd` -t rusdevops/bootstrap-cpp scripts/tests.sh
+          docker run -v `pwd`:`pwd` -w `pwd` -t rusdevops/toolbox-cpp scripts/tests.sh
 
 
   quality:
@@ -61,4 +61,4 @@ jobs:
 
       - name: quality
         run:
-          docker run -v `pwd`:`pwd` -w `pwd` -t rusdevops/bootstrap-cpp scripts/coverage.sh
+          docker run -v `pwd`:`pwd` -w `pwd` -t rusdevops/toolbox-cpp scripts/coverage.sh

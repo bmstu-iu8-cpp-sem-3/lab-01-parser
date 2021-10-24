@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+pushd $(git rev-parse --show-toplevel)
+
 set -e
 export GTEST_COLOR=1
 export CTEST_OUTPUT_ON_FAILURE=true
@@ -14,3 +16,5 @@ cmake --build _builds
 cmake --build _builds --target test
 cmake --build _builds --target gcov
 gcovr -r  .
+
+popd

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+pushd $(git rev-parse --show-toplevel)
+
 set -e
 CMAKE_LINKER_OPTS="-DCMAKE_EXE_LINKER='-fuse-ld=gold'"
 CPACK_CONFIG_OPTS="-DCPACK_OUTPUT_FILE_PREFIX=$(pwd)/_artifacts -DCPACK_GENERATOR=DEB"
@@ -15,3 +17,4 @@ CMAKE_OPTS="$CMAKE_LINKER_OPTS $CMAKE_CONFIG_OPTS $CMAKE_TOOLCHAIN_OPTS $CPACK_C
 cmake -H. -B_builds $CMAKE_OPTS
 cmake --build _builds --target package
 
+popd

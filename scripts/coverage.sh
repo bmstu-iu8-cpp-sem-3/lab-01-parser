@@ -17,4 +17,6 @@ cmake --build _builds --target test
 cmake --build _builds --target gcov
 gcovr -r  .
 
+rm -r _builds
+
 popd

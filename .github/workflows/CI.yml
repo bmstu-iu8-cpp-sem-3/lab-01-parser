@@ -12,53 +12,25 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  checks:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+  Checks:
+    runs-on: ubuntu-22.04
     timeout-minutes: 25
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      - name: prepare environment
-        run:  sudo apt install git &&
-              git submodule update --init
-
-      - name: checks
+      - uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+      - name: setup environment
         run:
-          docker run -v `pwd`:`pwd` -w `pwd` --cap-add=SYS_PTRACE -t rusdevops/toolbox-cpp scripts/checks.sh
-
-
-  tests:
-    runs-on: ubuntu-latest
-    timeout-minutes: 25
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      - name: prepare environment
-        run:  sudo apt install git &&
-              git submodule update --init
-
-      - name: tests
+          sudo ./scripts/setup-all.sh
+      - name: Codestyle
         run:
-          docker run -v `pwd`:`pwd` -w `pwd` -t rusdevops/toolbox-cpp scripts/tests.sh
-
-
-  quality:
-    runs-on: ubuntu-latest
-    timeout-minutes: 25
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      - name: prepare environment
-        run:  sudo apt install git &&
-              git submodule update --init
-
-      - name: quality
+          scripts/codestyle.sh
+      - name: AddressSanitizer
         run:
-          docker run -v `pwd`:`pwd` -w `pwd` -t rusdevops/toolbox-cpp scripts/coverage.sh
+          scripts/asan.sh
+      - name: ThreadSanitizer
+        run:
+          scripts/tsan.sh
+      - name: Coverage
+        run:
+          scripts/coverage.sh

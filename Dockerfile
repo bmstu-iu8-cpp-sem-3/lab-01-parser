@@ -1,9 +1,9 @@
-FROM ubuntu:21.04
-LABEL version="0.1"
+# rusdevops/bootstrap-cpp image
+FROM ubuntu:20.04
 LABEL maintainer="rusdevops@gmail.com"
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt -y update && \
-    apt -y install clang g++ cmake libgtest-dev libgmock-dev git \
-    python3 python3-pip gcovr lcov doxygen && \
-    python3 -m pip install cpplint requests gitpython && \
+    apt -y install software-properties-common doxygen rpm g++-7 curl llvm g++ lcov gcovr cmake python3-pip clang git && \
+    add-apt-repository -y ppa:ubuntu-toolchain-r/test && \
+    pip3 install cpplint gitpython requests && \
     apt clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

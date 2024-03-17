@@ -12,25 +12,53 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  Checks:
-    runs-on: self-hosted
+  # This workflow contains a single job called "build"
+  checks:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
     timeout-minutes: 25
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: 'recursive'
-      - name: setup environment
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - name: prepare environment
+        run:  sudo apt install git &&
+              git submodule update --init
+
+      - name: checks
         run:
-          sudo ./scripts/setup-all.sh
-      - name: Codestyle
+          docker run -v `pwd`:`pwd` -w `pwd` --cap-add=SYS_PTRACE -t rusdevops/bootstrap-cpp scripts/checks.sh
+
+
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - name: prepare environment
+        run:  sudo apt install git &&
+              git submodule update --init
+
+      - name: tests
         run:
-          scripts/codestyle.sh
-      - name: AddressSanitizer
+          docker run -v `pwd`:`pwd` -w `pwd` -t rusdevops/bootstrap-cpp scripts/tests.sh
+
+
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - name: prepare environment
+        run:  sudo apt install git &&
+              git submodule update --init
+
+      - name: quality
         run:
-          scripts/asan.sh
-      - name: ThreadSanitizer
-        run:
-          scripts/tsan.sh
-      - name: Coverage
-        run:
-          scripts/coverage.sh
+          docker run -v `pwd`:`pwd` -w `pwd` -t rusdevops/bootstrap-cpp scripts/coverage.sh

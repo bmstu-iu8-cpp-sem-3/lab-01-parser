@@ -1,0 +1,25 @@
+{
+  "items": [
+    {
+      "name": "Chuck Norris",
+      "group": "1",
+      "avg": "4.25",
+      "debt": null
+    },
+    {
+      "name": "Jan Clode Van Damme",
+      "group": 31,
+      "avg": 4,
+      "debt": "C++"
+    },
+    {
+      "name": "Terminator Ivanovich",
+      "group": "SM6-111",
+      "avg": 5,
+      "debt": "C++"
+    }
+  ],
+  "_meta": {
+    "count": 3
+  }
+}

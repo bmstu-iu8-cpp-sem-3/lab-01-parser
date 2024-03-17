@@ -18,7 +18,7 @@ jobs:
       - name: Build packages
         id: build_packages
         run: |
-          docker run -v `pwd`:`pwd` -w `pwd` --cap-add=SYS_PTRACE -t rusdevops/toolbox-cpp scripts/package.sh
+          docker run -v `pwd`:`pwd` -w `pwd` --cap-add=SYS_PTRACE -t rusdevops/bootstrap-cpp scripts/package.sh
           cd _artifacts
           DEB_PACKAGE_NAME=$(ls *.deb | tail -n 1)
           RPM_PACKAGE_NAME=$(ls *.rpm | tail -n 1)
